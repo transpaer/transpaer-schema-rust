@@ -1,0 +1,696 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$defs": {
+    "providerVariant": {
+      "type": "string",
+      "enum": [
+        "cataloger",
+        "producer",
+        "reviewer"
+      ]
+    },
+    "entryVariant": {
+      "type": "string",
+      "enum": [
+        "about",
+        "product",
+        "producer"
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "variant": {
+          "$ref": "#/$defs/providerVariant"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "creation_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "valid_from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "valid_to": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "version",
+        "variant",
+        "title"
+      ]
+    },
+    "catalogVariant": {
+      "type": "string",
+      "enum": [
+        "store",
+        "priceComparator",
+        "database"
+      ]
+    },
+    "regionVariant": {
+      "type": "string",
+      "enum": [
+        "all",
+        "unknown"
+      ]
+    },
+    "regionList": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "regions": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/regionVariant"
+        },
+        {
+          "$ref": "#/$defs/regionList"
+        }
+      ]
+    },
+    "productIds": {
+      "type": "object",
+      "properties": {
+        "ean": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "gtin": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "wiki": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "producerIds": {
+      "type": "object",
+      "properties": {
+        "vat": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "wiki": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "relatedProducts": {
+      "type": "object",
+      "properties": {
+        "preceded_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "followed_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "productAvailability": {
+      "type": "object",
+      "properties": {
+        "regions": {
+          "$ref": "#/$defs/regions"
+        }
+      },
+      "required": [
+        "regions"
+      ]
+    },
+    "productCategory": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "productCategorisation": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/productCategory"
+          }
+        }
+      },
+      "required": [
+        "categories"
+      ]
+    },
+    "productOrigins": {
+      "type": "object",
+      "properties": {
+        "producer_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "aboutScoreReview": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "div": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "min",
+        "max",
+        "div"
+      ]
+    },
+    "aboutCertification": {
+      "type": "object",
+      "properties": {}
+    },
+    "aboutReview": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/aboutScoreReview"
+        },
+        {
+          "$ref": "#/$defs/aboutCertification"
+        }
+      ]
+    },
+    "scoreReview": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "certification": {
+      "type": "object",
+      "properties": {
+        "is_certified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "review": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/scoreReview"
+        },
+        {
+          "$ref": "#/$defs/certification"
+        }
+      ]
+    },
+    "aboutCataloger": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "variant": {
+          "$ref": "#/$defs/catalogVariant"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "website",
+        "variant"
+      ]
+    },
+    "aboutProducer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ids": {
+          "$ref": "#/$defs/producerIds"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "websites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "ids",
+        "name",
+        "website"
+      ]
+    },
+    "catalogProducer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ids": {
+          "$ref": "#/$defs/producerIds"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "websites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "ids",
+        "names"
+      ]
+    },
+    "reviewProducer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ids": {
+          "$ref": "#/$defs/producerIds"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "websites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "report": {
+          "$ref": "#/$defs/report"
+        },
+        "review": {
+          "$ref": "#/$defs/review"
+        }
+      },
+      "required": [
+        "id",
+        "ids",
+        "names"
+      ]
+    },
+    "catalogProduct": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ids": {
+          "$ref": "#/$defs/productIds"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "categorisation:": {
+          "$ref": "#/$defs/productCategorisation"
+        },
+        "origins": {
+          "$ref": "#/$defs/productOrigins"
+        },
+        "availability": {
+          "$ref": "#/$defs/productAvailability"
+        },
+        "related": {
+          "$ref": "#/$defs/relatedProducts"
+        }
+      },
+      "required": [
+        "id",
+        "ids",
+        "name"
+      ]
+    },
+    "producerProduct": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ids": {
+          "$ref": "#/$defs/productIds"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "categorisation:": {
+          "$ref": "#/$defs/productCategorisation"
+        },
+        "origins": {
+          "$ref": "#/$defs/productOrigins"
+        },
+        "availability": {
+          "$ref": "#/$defs/productAvailability"
+        },
+        "related": {
+          "$ref": "#/$defs/relatedProducts"
+        }
+      },
+      "required": [
+        "id",
+        "ids",
+        "name",
+        "description",
+        "categorisation"
+      ]
+    },
+    "reviewProduct": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ids": {
+          "$ref": "#/$defs/productIds"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "summary": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "categorisation:": {
+          "$ref": "#/$defs/productCategorisation"
+        },
+        "origins": {
+          "$ref": "#/$defs/productOrigins"
+        },
+        "availability": {
+          "$ref": "#/$defs/productAvailability"
+        },
+        "related": {
+          "$ref": "#/$defs/relatedProducts"
+        },
+        "report": {
+          "$ref": "#/$defs/report"
+        },
+        "review": {
+          "$ref": "#/$defs/review"
+        }
+      },
+      "required": [
+        "id",
+        "ids",
+        "name"
+      ]
+    },
+    "aboutReviewer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "reviews": {
+          "$ref": "#/$defs/aboutReview"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "website",
+        "description"
+      ]
+    },
+    "producerReviewer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "catalogerRoot": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/meta"
+        },
+        "cataloger": {
+          "$ref": "#/$defs/aboutCataloger"
+        },
+        "producers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/catalogProducer"
+          }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/catalogProduct"
+          }
+        }
+      },
+      "required": [
+        "meta",
+        "cataloger",
+        "producers",
+        "products"
+      ]
+    },
+    "producerRoot": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/meta"
+        },
+        "producer": {
+          "$ref": "#/$defs/aboutProducer"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/producerProduct"
+          }
+        },
+        "reviewers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/producerReviewer"
+          }
+        }
+      },
+      "required": [
+        "meta",
+        "producer",
+        "producers",
+        "reviewers"
+      ]
+    },
+    "reviewerRoot": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/meta"
+        },
+        "reviewer": {
+          "$ref": "#/$defs/aboutReviewer"
+        },
+        "producers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reviewProducer"
+          }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reviewProduct"
+          }
+        }
+      },
+      "required": [
+        "meta",
+        "reviewer",
+        "producers",
+        "products"
+      ]
+    },
+    "root": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/catalogerRoot"
+        },
+        {
+          "$ref": "#/$defs/producerRoot"
+        },
+        {
+          "$ref": "#/$defs/reviewerRoot"
+        }
+      ]
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/root"
+}

@@ -1,0 +1,12 @@
+[package]
+name = "sustainity-schema"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+serde-jsonlines = { version = "0.5" }
+serde_yaml = { version = "0.9" }
+snafu = { version = "0.8.0" }
