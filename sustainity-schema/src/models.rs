@@ -5,6 +5,65 @@
 
 use serde::{Deserialize, Serialize};
 
+#[doc = r" Error types."]
+pub mod error {
+    #[doc = r" Error from a TryFrom or FromStr implementation."]
+    pub struct ConversionError(std::borrow::Cow<'static, str>);
+    impl std::error::Error for ConversionError {}
+    impl std::fmt::Display for ConversionError {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+            std::fmt::Display::fmt(&self.0, f)
+        }
+    }
+    impl std::fmt::Debug for ConversionError {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+            std::fmt::Debug::fmt(&self.0, f)
+        }
+    }
+    impl From<&'static str> for ConversionError {
+        fn from(value: &'static str) -> Self {
+            Self(value.into())
+        }
+    }
+    impl From<String> for ConversionError {
+        fn from(value: String) -> Self {
+            Self(value.into())
+        }
+    }
+}
+#[doc = "AboutCataloger"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"id\","]
+#[doc = "    \"name\","]
+#[doc = "    \"variant\","]
+#[doc = "    \"website\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"name\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"variant\": {"]
+#[doc = "      \"$ref\": \"#/$defs/catalogVariant\""]
+#[doc = "    },"]
+#[doc = "    \"website\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct AboutCataloger {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -21,9 +80,19 @@ impl From<&AboutCataloger> for AboutCataloger {
 }
 impl AboutCataloger {
     pub fn builder() -> builder::AboutCataloger {
-        builder::AboutCataloger::default()
+        Default::default()
     }
 }
+#[doc = "AboutCertification"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\""]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct AboutCertification(pub serde_json::Map<String, serde_json::Value>);
 impl std::ops::Deref for AboutCertification {
@@ -47,6 +116,48 @@ impl From<serde_json::Map<String, serde_json::Value>> for AboutCertification {
         Self(value)
     }
 }
+#[doc = "AboutProducer"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"id\","]
+#[doc = "    \"ids\","]
+#[doc = "    \"name\","]
+#[doc = "    \"website\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"ids\": {"]
+#[doc = "      \"$ref\": \"#/$defs/producerIds\""]
+#[doc = "    },"]
+#[doc = "    \"images\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"name\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"websites\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct AboutProducer {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -56,6 +167,7 @@ pub struct AboutProducer {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub images: Vec<String>,
     pub name: String,
+    pub website: serde_json::Value,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub websites: Vec<String>,
 }
@@ -66,9 +178,26 @@ impl From<&AboutProducer> for AboutProducer {
 }
 impl AboutProducer {
     pub fn builder() -> builder::AboutProducer {
-        builder::AboutProducer::default()
+        Default::default()
     }
 }
+#[doc = "AboutReview"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"oneOf\": ["]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/aboutScoreReview\""]
+#[doc = "    },"]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/aboutCertification\""]
+#[doc = "    }"]
+#[doc = "  ]"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(untagged)]
 pub enum AboutReview {
@@ -90,6 +219,39 @@ impl From<AboutCertification> for AboutReview {
         Self::Certification(value)
     }
 }
+#[doc = "AboutReviewer"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"description\","]
+#[doc = "    \"id\","]
+#[doc = "    \"name\","]
+#[doc = "    \"website\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"name\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"reviews\": {"]
+#[doc = "      \"$ref\": \"#/$defs/aboutReview\""]
+#[doc = "    },"]
+#[doc = "    \"website\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct AboutReviewer {
     pub description: String,
@@ -106,9 +268,35 @@ impl From<&AboutReviewer> for AboutReviewer {
 }
 impl AboutReviewer {
     pub fn builder() -> builder::AboutReviewer {
-        builder::AboutReviewer::default()
+        Default::default()
     }
 }
+#[doc = "AboutScoreReview"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"div\","]
+#[doc = "    \"max\","]
+#[doc = "    \"min\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"div\": {"]
+#[doc = "      \"type\": \"integer\""]
+#[doc = "    },"]
+#[doc = "    \"max\": {"]
+#[doc = "      \"type\": \"integer\""]
+#[doc = "    },"]
+#[doc = "    \"min\": {"]
+#[doc = "      \"type\": \"integer\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct AboutScoreReview {
     pub div: i64,
@@ -122,9 +310,53 @@ impl From<&AboutScoreReview> for AboutScoreReview {
 }
 impl AboutScoreReview {
     pub fn builder() -> builder::AboutScoreReview {
-        builder::AboutScoreReview::default()
+        Default::default()
     }
 }
+#[doc = "CatalogProducer"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"id\","]
+#[doc = "    \"ids\","]
+#[doc = "    \"names\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"ids\": {"]
+#[doc = "      \"$ref\": \"#/$defs/producerIds\""]
+#[doc = "    },"]
+#[doc = "    \"images\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"names\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"websites\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CatalogProducer {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -144,18 +376,64 @@ impl From<&CatalogProducer> for CatalogProducer {
 }
 impl CatalogProducer {
     pub fn builder() -> builder::CatalogProducer {
-        builder::CatalogProducer::default()
+        Default::default()
     }
 }
+#[doc = "CatalogProduct"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"id\","]
+#[doc = "    \"ids\","]
+#[doc = "    \"names\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"availability\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productAvailability\""]
+#[doc = "    },"]
+#[doc = "    \"categorisation\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productCategorisation\""]
+#[doc = "    },"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"ids\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productIds\""]
+#[doc = "    },"]
+#[doc = "    \"images\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"names\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"origins\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productOrigins\""]
+#[doc = "    },"]
+#[doc = "    \"related\": {"]
+#[doc = "      \"$ref\": \"#/$defs/relatedProducts\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CatalogProduct {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub availability: Option<ProductAvailability>,
-    #[serde(
-        rename = "categorisation:",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub categorisation: Option<ProductCategorisation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -163,7 +441,6 @@ pub struct CatalogProduct {
     pub ids: ProductIds,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub images: Vec<String>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub names: Vec<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub origins: Option<ProductOrigins>,
@@ -177,9 +454,24 @@ impl From<&CatalogProduct> for CatalogProduct {
 }
 impl CatalogProduct {
     pub fn builder() -> builder::CatalogProduct {
-        builder::CatalogProduct::default()
+        Default::default()
     }
 }
+#[doc = "CatalogVariant"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"string\","]
+#[doc = "  \"enum\": ["]
+#[doc = "    \"store\","]
+#[doc = "    \"priceComparator\","]
+#[doc = "    \"database\""]
+#[doc = "  ]"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum CatalogVariant {
     #[serde(rename = "store")]
@@ -204,34 +496,70 @@ impl ToString for CatalogVariant {
     }
 }
 impl std::str::FromStr for CatalogVariant {
-    type Err = &'static str;
-    fn from_str(value: &str) -> Result<Self, &'static str> {
+    type Err = self::error::ConversionError;
+    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
         match value {
             "store" => Ok(Self::Store),
             "priceComparator" => Ok(Self::PriceComparator),
             "database" => Ok(Self::Database),
-            _ => Err("invalid value"),
+            _ => Err("invalid value".into()),
         }
     }
 }
 impl std::convert::TryFrom<&str> for CatalogVariant {
-    type Error = &'static str;
-    fn try_from(value: &str) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
 impl std::convert::TryFrom<&String> for CatalogVariant {
-    type Error = &'static str;
-    fn try_from(value: &String) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
 impl std::convert::TryFrom<String> for CatalogVariant {
-    type Error = &'static str;
-    fn try_from(value: String) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
+#[doc = "CatalogerRoot"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"cataloger\","]
+#[doc = "    \"meta\","]
+#[doc = "    \"producers\","]
+#[doc = "    \"products\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"cataloger\": {"]
+#[doc = "      \"$ref\": \"#/$defs/aboutCataloger\""]
+#[doc = "    },"]
+#[doc = "    \"meta\": {"]
+#[doc = "      \"$ref\": \"#/$defs/meta\""]
+#[doc = "    },"]
+#[doc = "    \"producers\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/catalogProducer\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"products\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/catalogProduct\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CatalogerRoot {
     pub cataloger: AboutCataloger,
@@ -246,9 +574,24 @@ impl From<&CatalogerRoot> for CatalogerRoot {
 }
 impl CatalogerRoot {
     pub fn builder() -> builder::CatalogerRoot {
-        builder::CatalogerRoot::default()
+        Default::default()
     }
 }
+#[doc = "Certification"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"is_certified\": {"]
+#[doc = "      \"type\": \"boolean\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Certification {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -261,9 +604,24 @@ impl From<&Certification> for Certification {
 }
 impl Certification {
     pub fn builder() -> builder::Certification {
-        builder::Certification::default()
+        Default::default()
     }
 }
+#[doc = "EntryVariant"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"string\","]
+#[doc = "  \"enum\": ["]
+#[doc = "    \"about\","]
+#[doc = "    \"product\","]
+#[doc = "    \"producer\""]
+#[doc = "  ]"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum EntryVariant {
     #[serde(rename = "about")]
@@ -288,34 +646,81 @@ impl ToString for EntryVariant {
     }
 }
 impl std::str::FromStr for EntryVariant {
-    type Err = &'static str;
-    fn from_str(value: &str) -> Result<Self, &'static str> {
+    type Err = self::error::ConversionError;
+    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
         match value {
             "about" => Ok(Self::About),
             "product" => Ok(Self::Product),
             "producer" => Ok(Self::Producer),
-            _ => Err("invalid value"),
+            _ => Err("invalid value".into()),
         }
     }
 }
 impl std::convert::TryFrom<&str> for EntryVariant {
-    type Error = &'static str;
-    fn try_from(value: &str) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
 impl std::convert::TryFrom<&String> for EntryVariant {
-    type Error = &'static str;
-    fn try_from(value: &String) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
 impl std::convert::TryFrom<String> for EntryVariant {
-    type Error = &'static str;
-    fn try_from(value: String) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
+#[doc = "Meta"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"title\","]
+#[doc = "    \"variant\","]
+#[doc = "    \"version\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"authors\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"creation_timestamp\": {"]
+#[doc = "      \"type\": \"string\","]
+#[doc = "      \"format\": \"date-time\""]
+#[doc = "    },"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"title\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"valid_from\": {"]
+#[doc = "      \"type\": \"string\","]
+#[doc = "      \"format\": \"date-time\""]
+#[doc = "    },"]
+#[doc = "    \"valid_to\": {"]
+#[doc = "      \"type\": \"string\","]
+#[doc = "      \"format\": \"date-time\""]
+#[doc = "    },"]
+#[doc = "    \"variant\": {"]
+#[doc = "      \"$ref\": \"#/$defs/providerVariant\""]
+#[doc = "    },"]
+#[doc = "    \"version\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Meta {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -339,11 +744,46 @@ impl From<&Meta> for Meta {
 }
 impl Meta {
     pub fn builder() -> builder::Meta {
-        builder::Meta::default()
+        Default::default()
     }
 }
+#[doc = "ProducerIds"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"domains\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      },"]
+#[doc = "      \"uniqueItems\": true"]
+#[doc = "    },"]
+#[doc = "    \"vat\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      },"]
+#[doc = "      \"uniqueItems\": true"]
+#[doc = "    },"]
+#[doc = "    \"wiki\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      },"]
+#[doc = "      \"uniqueItems\": true"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProducerIds {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub domains: Option<Vec<String>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub vat: Option<Vec<String>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -356,24 +796,72 @@ impl From<&ProducerIds> for ProducerIds {
 }
 impl ProducerIds {
     pub fn builder() -> builder::ProducerIds {
-        builder::ProducerIds::default()
+        Default::default()
     }
 }
+#[doc = "ProducerProduct"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"categorisation\","]
+#[doc = "    \"description\","]
+#[doc = "    \"id\","]
+#[doc = "    \"ids\","]
+#[doc = "    \"name\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"availability\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productAvailability\""]
+#[doc = "    },"]
+#[doc = "    \"categorisation\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productCategorisation\""]
+#[doc = "    },"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"ids\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productIds\""]
+#[doc = "    },"]
+#[doc = "    \"images\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"names\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"origins\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productOrigins\""]
+#[doc = "    },"]
+#[doc = "    \"related\": {"]
+#[doc = "      \"$ref\": \"#/$defs/relatedProducts\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProducerProduct {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub availability: Option<ProductAvailability>,
-    #[serde(
-        rename = "categorisation:",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub categorisation: Option<ProductCategorisation>,
+    pub categorisation: ProductCategorisation,
     pub description: String,
     pub id: String,
     pub ids: ProductIds,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub images: Vec<String>,
+    pub name: serde_json::Value,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub names: Vec<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -388,14 +876,43 @@ impl From<&ProducerProduct> for ProducerProduct {
 }
 impl ProducerProduct {
     pub fn builder() -> builder::ProducerProduct {
-        builder::ProducerProduct::default()
+        Default::default()
     }
 }
+#[doc = "ProducerReviewer"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"id\","]
+#[doc = "    \"name\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"names\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProducerReviewer {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     pub id: String,
+    pub name: serde_json::Value,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub names: Vec<String>,
 }
@@ -406,13 +923,50 @@ impl From<&ProducerReviewer> for ProducerReviewer {
 }
 impl ProducerReviewer {
     pub fn builder() -> builder::ProducerReviewer {
-        builder::ProducerReviewer::default()
+        Default::default()
     }
 }
+#[doc = "ProducerRoot"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"meta\","]
+#[doc = "    \"producer\","]
+#[doc = "    \"producers\","]
+#[doc = "    \"reviewers\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"meta\": {"]
+#[doc = "      \"$ref\": \"#/$defs/meta\""]
+#[doc = "    },"]
+#[doc = "    \"producer\": {"]
+#[doc = "      \"$ref\": \"#/$defs/aboutProducer\""]
+#[doc = "    },"]
+#[doc = "    \"products\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/producerProduct\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"reviewers\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/producerReviewer\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProducerRoot {
     pub meta: Meta,
     pub producer: AboutProducer,
+    pub producers: serde_json::Value,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub products: Vec<ProducerProduct>,
     pub reviewers: Vec<ProducerReviewer>,
@@ -424,9 +978,27 @@ impl From<&ProducerRoot> for ProducerRoot {
 }
 impl ProducerRoot {
     pub fn builder() -> builder::ProducerRoot {
-        builder::ProducerRoot::default()
+        Default::default()
     }
 }
+#[doc = "ProductAvailability"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"regions\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"regions\": {"]
+#[doc = "      \"$ref\": \"#/$defs/regions\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductAvailability {
     pub regions: Regions,
@@ -438,9 +1010,30 @@ impl From<&ProductAvailability> for ProductAvailability {
 }
 impl ProductAvailability {
     pub fn builder() -> builder::ProductAvailability {
-        builder::ProductAvailability::default()
+        Default::default()
     }
 }
+#[doc = "ProductCategorisation"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"categories\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"categories\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/productCategory\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductCategorisation {
     pub categories: Vec<ProductCategory>,
@@ -452,9 +1045,22 @@ impl From<&ProductCategorisation> for ProductCategorisation {
 }
 impl ProductCategorisation {
     pub fn builder() -> builder::ProductCategorisation {
-        builder::ProductCategorisation::default()
+        Default::default()
     }
 }
+#[doc = "ProductCategory"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"array\","]
+#[doc = "  \"items\": {"]
+#[doc = "    \"type\": \"string\""]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductCategory(pub Vec<String>);
 impl std::ops::Deref for ProductCategory {
@@ -478,6 +1084,39 @@ impl From<Vec<String>> for ProductCategory {
         Self(value)
     }
 }
+#[doc = "ProductIds"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"ean\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      },"]
+#[doc = "      \"uniqueItems\": true"]
+#[doc = "    },"]
+#[doc = "    \"gtin\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      },"]
+#[doc = "      \"uniqueItems\": true"]
+#[doc = "    },"]
+#[doc = "    \"wiki\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      },"]
+#[doc = "      \"uniqueItems\": true"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductIds {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -494,9 +1133,27 @@ impl From<&ProductIds> for ProductIds {
 }
 impl ProductIds {
     pub fn builder() -> builder::ProductIds {
-        builder::ProductIds::default()
+        Default::default()
     }
 }
+#[doc = "ProductOrigins"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"producer_ids\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ProductOrigins {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -509,9 +1166,24 @@ impl From<&ProductOrigins> for ProductOrigins {
 }
 impl ProductOrigins {
     pub fn builder() -> builder::ProductOrigins {
-        builder::ProductOrigins::default()
+        Default::default()
     }
 }
+#[doc = "ProviderVariant"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"string\","]
+#[doc = "  \"enum\": ["]
+#[doc = "    \"cataloger\","]
+#[doc = "    \"producer\","]
+#[doc = "    \"reviewer\""]
+#[doc = "  ]"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum ProviderVariant {
     #[serde(rename = "cataloger")]
@@ -536,34 +1208,48 @@ impl ToString for ProviderVariant {
     }
 }
 impl std::str::FromStr for ProviderVariant {
-    type Err = &'static str;
-    fn from_str(value: &str) -> Result<Self, &'static str> {
+    type Err = self::error::ConversionError;
+    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
         match value {
             "cataloger" => Ok(Self::Cataloger),
             "producer" => Ok(Self::Producer),
             "reviewer" => Ok(Self::Reviewer),
-            _ => Err("invalid value"),
+            _ => Err("invalid value".into()),
         }
     }
 }
 impl std::convert::TryFrom<&str> for ProviderVariant {
-    type Error = &'static str;
-    fn try_from(value: &str) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
 impl std::convert::TryFrom<&String> for ProviderVariant {
-    type Error = &'static str;
-    fn try_from(value: &String) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
 impl std::convert::TryFrom<String> for ProviderVariant {
-    type Error = &'static str;
-    fn try_from(value: String) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
+#[doc = "RegionList"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"array\","]
+#[doc = "  \"items\": {"]
+#[doc = "    \"type\": \"string\""]
+#[doc = "  },"]
+#[doc = "  \"uniqueItems\": true"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RegionList(pub Vec<String>);
 impl std::ops::Deref for RegionList {
@@ -587,6 +1273,20 @@ impl From<Vec<String>> for RegionList {
         Self(value)
     }
 }
+#[doc = "RegionVariant"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"string\","]
+#[doc = "  \"enum\": ["]
+#[doc = "    \"all\","]
+#[doc = "    \"unknown\""]
+#[doc = "  ]"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum RegionVariant {
     #[serde(rename = "all")]
@@ -608,33 +1308,50 @@ impl ToString for RegionVariant {
     }
 }
 impl std::str::FromStr for RegionVariant {
-    type Err = &'static str;
-    fn from_str(value: &str) -> Result<Self, &'static str> {
+    type Err = self::error::ConversionError;
+    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
         match value {
             "all" => Ok(Self::All),
             "unknown" => Ok(Self::Unknown),
-            _ => Err("invalid value"),
+            _ => Err("invalid value".into()),
         }
     }
 }
 impl std::convert::TryFrom<&str> for RegionVariant {
-    type Error = &'static str;
-    fn try_from(value: &str) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
 impl std::convert::TryFrom<&String> for RegionVariant {
-    type Error = &'static str;
-    fn try_from(value: &String) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
 impl std::convert::TryFrom<String> for RegionVariant {
-    type Error = &'static str;
-    fn try_from(value: String) -> Result<Self, &'static str> {
+    type Error = self::error::ConversionError;
+    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
+#[doc = "Regions"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"oneOf\": ["]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/regionVariant\""]
+#[doc = "    },"]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/regionList\""]
+#[doc = "    }"]
+#[doc = "  ]"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(untagged)]
 pub enum Regions {
@@ -656,6 +1373,32 @@ impl From<RegionList> for Regions {
         Self::List(value)
     }
 }
+#[doc = "RelatedProducts"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"followed_by\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      },"]
+#[doc = "      \"uniqueItems\": true"]
+#[doc = "    },"]
+#[doc = "    \"preceded_by\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      },"]
+#[doc = "      \"uniqueItems\": true"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RelatedProducts {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -670,9 +1413,24 @@ impl From<&RelatedProducts> for RelatedProducts {
 }
 impl RelatedProducts {
     pub fn builder() -> builder::RelatedProducts {
-        builder::RelatedProducts::default()
+        Default::default()
     }
 }
+#[doc = "Report"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"url\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Report {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -685,9 +1443,26 @@ impl From<&Report> for Report {
 }
 impl Report {
     pub fn builder() -> builder::Report {
-        builder::Report::default()
+        Default::default()
     }
 }
+#[doc = "Review"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"oneOf\": ["]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/scoreReview\""]
+#[doc = "    },"]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/certification\""]
+#[doc = "    }"]
+#[doc = "  ]"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(untagged)]
 pub enum Review {
@@ -709,6 +1484,56 @@ impl From<Certification> for Review {
         Self::Certification(value)
     }
 }
+#[doc = "ReviewProducer"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"id\","]
+#[doc = "    \"ids\","]
+#[doc = "    \"names\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"description\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"ids\": {"]
+#[doc = "      \"$ref\": \"#/$defs/producerIds\""]
+#[doc = "    },"]
+#[doc = "    \"images\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"names\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"report\": {"]
+#[doc = "      \"$ref\": \"#/$defs/report\""]
+#[doc = "    },"]
+#[doc = "    \"review\": {"]
+#[doc = "      \"$ref\": \"#/$defs/review\""]
+#[doc = "    },"]
+#[doc = "    \"websites\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ReviewProducer {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -732,9 +1557,65 @@ impl From<&ReviewProducer> for ReviewProducer {
 }
 impl ReviewProducer {
     pub fn builder() -> builder::ReviewProducer {
-        builder::ReviewProducer::default()
+        Default::default()
     }
 }
+#[doc = "ReviewProduct"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"id\","]
+#[doc = "    \"ids\","]
+#[doc = "    \"names\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"availability\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productAvailability\""]
+#[doc = "    },"]
+#[doc = "    \"categorisation:\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productCategorisation\""]
+#[doc = "    },"]
+#[doc = "    \"id\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"ids\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productIds\""]
+#[doc = "    },"]
+#[doc = "    \"images\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"names\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"type\": \"string\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"origins\": {"]
+#[doc = "      \"$ref\": \"#/$defs/productOrigins\""]
+#[doc = "    },"]
+#[doc = "    \"related\": {"]
+#[doc = "      \"$ref\": \"#/$defs/relatedProducts\""]
+#[doc = "    },"]
+#[doc = "    \"report\": {"]
+#[doc = "      \"$ref\": \"#/$defs/report\""]
+#[doc = "    },"]
+#[doc = "    \"review\": {"]
+#[doc = "      \"$ref\": \"#/$defs/review\""]
+#[doc = "    },"]
+#[doc = "    \"summary\": {"]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ReviewProduct {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -749,7 +1630,6 @@ pub struct ReviewProduct {
     pub ids: ProductIds,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub images: Vec<String>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub names: Vec<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub origins: Option<ProductOrigins>,
@@ -769,9 +1649,45 @@ impl From<&ReviewProduct> for ReviewProduct {
 }
 impl ReviewProduct {
     pub fn builder() -> builder::ReviewProduct {
-        builder::ReviewProduct::default()
+        Default::default()
     }
 }
+#[doc = "ReviewerRoot"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"meta\","]
+#[doc = "    \"producers\","]
+#[doc = "    \"products\","]
+#[doc = "    \"reviewer\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"meta\": {"]
+#[doc = "      \"$ref\": \"#/$defs/meta\""]
+#[doc = "    },"]
+#[doc = "    \"producers\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/reviewProducer\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"products\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/reviewProduct\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"reviewer\": {"]
+#[doc = "      \"$ref\": \"#/$defs/aboutReviewer\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ReviewerRoot {
     pub meta: Meta,
@@ -786,9 +1702,29 @@ impl From<&ReviewerRoot> for ReviewerRoot {
 }
 impl ReviewerRoot {
     pub fn builder() -> builder::ReviewerRoot {
-        builder::ReviewerRoot::default()
+        Default::default()
     }
 }
+#[doc = "Root"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"oneOf\": ["]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/catalogerRoot\""]
+#[doc = "    },"]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/producerRoot\""]
+#[doc = "    },"]
+#[doc = "    {"]
+#[doc = "      \"$ref\": \"#/$defs/reviewerRoot\""]
+#[doc = "    }"]
+#[doc = "  ]"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(untagged)]
 pub enum Root {
@@ -816,6 +1752,26 @@ impl From<ReviewerRoot> for Root {
         Self::ReviewerRoot(value)
     }
 }
+#[doc = "ScoreReview"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"value\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"value\": {"]
+#[doc = "      \"type\": \"integer\","]
+#[doc = "      \"maximum\": 100.0,"]
+#[doc = "      \"minimum\": 0.0"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ScoreReview {
     pub value: i64,
@@ -827,9 +1783,10 @@ impl From<&ScoreReview> for ScoreReview {
 }
 impl ScoreReview {
     pub fn builder() -> builder::ScoreReview {
-        builder::ScoreReview::default()
+        Default::default()
     }
 }
+#[doc = r" Types for composing complex structures."]
 pub mod builder {
     #[derive(Clone, Debug)]
     pub struct AboutCataloger {
@@ -903,8 +1860,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<AboutCataloger> for super::AboutCataloger {
-        type Error = String;
-        fn try_from(value: AboutCataloger) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: AboutCataloger) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -932,6 +1889,7 @@ pub mod builder {
         ids: Result<super::ProducerIds, String>,
         images: Result<Vec<String>, String>,
         name: Result<String, String>,
+        website: Result<serde_json::Value, String>,
         websites: Result<Vec<String>, String>,
     }
     impl Default for AboutProducer {
@@ -942,6 +1900,7 @@ pub mod builder {
                 ids: Err("no value supplied for ids".to_string()),
                 images: Ok(Default::default()),
                 name: Err("no value supplied for name".to_string()),
+                website: Err("no value supplied for website".to_string()),
                 websites: Ok(Default::default()),
             }
         }
@@ -997,6 +1956,16 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for name: {}", e));
             self
         }
+        pub fn website<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<serde_json::Value>,
+            T::Error: std::fmt::Display,
+        {
+            self.website = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for website: {}", e));
+            self
+        }
         pub fn websites<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<String>>,
@@ -1009,14 +1978,15 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<AboutProducer> for super::AboutProducer {
-        type Error = String;
-        fn try_from(value: AboutProducer) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: AboutProducer) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
                 ids: value.ids?,
                 images: value.images?,
                 name: value.name?,
+                website: value.website?,
                 websites: value.websites?,
             })
         }
@@ -1029,6 +1999,7 @@ pub mod builder {
                 ids: Ok(value.ids),
                 images: Ok(value.images),
                 name: Ok(value.name),
+                website: Ok(value.website),
                 websites: Ok(value.websites),
             }
         }
@@ -1105,8 +2076,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<AboutReviewer> for super::AboutReviewer {
-        type Error = String;
-        fn try_from(value: AboutReviewer) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: AboutReviewer) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -1175,8 +2146,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<AboutScoreReview> for super::AboutScoreReview {
-        type Error = String;
-        fn try_from(value: AboutScoreReview) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: AboutScoreReview) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 div: value.div?,
                 max: value.max?,
@@ -1277,8 +2248,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<CatalogProducer> for super::CatalogProducer {
-        type Error = String;
-        fn try_from(value: CatalogProducer) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: CatalogProducer) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -1322,7 +2293,7 @@ pub mod builder {
                 id: Err("no value supplied for id".to_string()),
                 ids: Err("no value supplied for ids".to_string()),
                 images: Ok(Default::default()),
-                names: Ok(Default::default()),
+                names: Err("no value supplied for names".to_string()),
                 origins: Ok(Default::default()),
                 related: Ok(Default::default()),
             }
@@ -1421,8 +2392,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<CatalogProduct> for super::CatalogProduct {
-        type Error = String;
-        fn try_from(value: CatalogProduct) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: CatalogProduct) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 availability: value.availability?,
                 categorisation: value.categorisation?,
@@ -1511,8 +2482,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<CatalogerRoot> for super::CatalogerRoot {
-        type Error = String;
-        fn try_from(value: CatalogerRoot) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: CatalogerRoot) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 cataloger: value.cataloger?,
                 meta: value.meta?,
@@ -1555,8 +2526,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<Certification> for super::Certification {
-        type Error = String;
-        fn try_from(value: Certification) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: Certification) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 is_certified: value.is_certified?,
             })
@@ -1680,8 +2651,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<Meta> for super::Meta {
-        type Error = String;
-        fn try_from(value: Meta) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: Meta) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 authors: value.authors?,
                 creation_timestamp: value.creation_timestamp?,
@@ -1710,18 +2681,30 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProducerIds {
+        domains: Result<Option<Vec<String>>, String>,
         vat: Result<Option<Vec<String>>, String>,
         wiki: Result<Option<Vec<String>>, String>,
     }
     impl Default for ProducerIds {
         fn default() -> Self {
             Self {
+                domains: Ok(Default::default()),
                 vat: Ok(Default::default()),
                 wiki: Ok(Default::default()),
             }
         }
     }
     impl ProducerIds {
+        pub fn domains<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<Vec<String>>>,
+            T::Error: std::fmt::Display,
+        {
+            self.domains = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for domains: {}", e));
+            self
+        }
         pub fn vat<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Option<Vec<String>>>,
@@ -1744,9 +2727,10 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ProducerIds> for super::ProducerIds {
-        type Error = String;
-        fn try_from(value: ProducerIds) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProducerIds) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
+                domains: value.domains?,
                 vat: value.vat?,
                 wiki: value.wiki?,
             })
@@ -1755,6 +2739,7 @@ pub mod builder {
     impl From<super::ProducerIds> for ProducerIds {
         fn from(value: super::ProducerIds) -> Self {
             Self {
+                domains: Ok(value.domains),
                 vat: Ok(value.vat),
                 wiki: Ok(value.wiki),
             }
@@ -1763,11 +2748,12 @@ pub mod builder {
     #[derive(Clone, Debug)]
     pub struct ProducerProduct {
         availability: Result<Option<super::ProductAvailability>, String>,
-        categorisation: Result<Option<super::ProductCategorisation>, String>,
+        categorisation: Result<super::ProductCategorisation, String>,
         description: Result<String, String>,
         id: Result<String, String>,
         ids: Result<super::ProductIds, String>,
         images: Result<Vec<String>, String>,
+        name: Result<serde_json::Value, String>,
         names: Result<Vec<String>, String>,
         origins: Result<Option<super::ProductOrigins>, String>,
         related: Result<Option<super::RelatedProducts>, String>,
@@ -1776,11 +2762,12 @@ pub mod builder {
         fn default() -> Self {
             Self {
                 availability: Ok(Default::default()),
-                categorisation: Ok(Default::default()),
+                categorisation: Err("no value supplied for categorisation".to_string()),
                 description: Err("no value supplied for description".to_string()),
                 id: Err("no value supplied for id".to_string()),
                 ids: Err("no value supplied for ids".to_string()),
                 images: Ok(Default::default()),
+                name: Err("no value supplied for name".to_string()),
                 names: Ok(Default::default()),
                 origins: Ok(Default::default()),
                 related: Ok(Default::default()),
@@ -1800,7 +2787,7 @@ pub mod builder {
         }
         pub fn categorisation<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductCategorisation>>,
+            T: std::convert::TryInto<super::ProductCategorisation>,
             T::Error: std::fmt::Display,
         {
             self.categorisation = value
@@ -1848,6 +2835,16 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for images: {}", e));
             self
         }
+        pub fn name<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<serde_json::Value>,
+            T::Error: std::fmt::Display,
+        {
+            self.name = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for name: {}", e));
+            self
+        }
         pub fn names<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<String>>,
@@ -1880,8 +2877,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ProducerProduct> for super::ProducerProduct {
-        type Error = String;
-        fn try_from(value: ProducerProduct) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProducerProduct) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 availability: value.availability?,
                 categorisation: value.categorisation?,
@@ -1889,6 +2886,7 @@ pub mod builder {
                 id: value.id?,
                 ids: value.ids?,
                 images: value.images?,
+                name: value.name?,
                 names: value.names?,
                 origins: value.origins?,
                 related: value.related?,
@@ -1904,6 +2902,7 @@ pub mod builder {
                 id: Ok(value.id),
                 ids: Ok(value.ids),
                 images: Ok(value.images),
+                name: Ok(value.name),
                 names: Ok(value.names),
                 origins: Ok(value.origins),
                 related: Ok(value.related),
@@ -1914,6 +2913,7 @@ pub mod builder {
     pub struct ProducerReviewer {
         description: Result<Option<String>, String>,
         id: Result<String, String>,
+        name: Result<serde_json::Value, String>,
         names: Result<Vec<String>, String>,
     }
     impl Default for ProducerReviewer {
@@ -1921,6 +2921,7 @@ pub mod builder {
             Self {
                 description: Ok(Default::default()),
                 id: Err("no value supplied for id".to_string()),
+                name: Err("no value supplied for name".to_string()),
                 names: Ok(Default::default()),
             }
         }
@@ -1946,6 +2947,16 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for id: {}", e));
             self
         }
+        pub fn name<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<serde_json::Value>,
+            T::Error: std::fmt::Display,
+        {
+            self.name = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for name: {}", e));
+            self
+        }
         pub fn names<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<String>>,
@@ -1958,11 +2969,12 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ProducerReviewer> for super::ProducerReviewer {
-        type Error = String;
-        fn try_from(value: ProducerReviewer) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProducerReviewer) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
+                name: value.name?,
                 names: value.names?,
             })
         }
@@ -1972,6 +2984,7 @@ pub mod builder {
             Self {
                 description: Ok(value.description),
                 id: Ok(value.id),
+                name: Ok(value.name),
                 names: Ok(value.names),
             }
         }
@@ -1980,6 +2993,7 @@ pub mod builder {
     pub struct ProducerRoot {
         meta: Result<super::Meta, String>,
         producer: Result<super::AboutProducer, String>,
+        producers: Result<serde_json::Value, String>,
         products: Result<Vec<super::ProducerProduct>, String>,
         reviewers: Result<Vec<super::ProducerReviewer>, String>,
     }
@@ -1988,6 +3002,7 @@ pub mod builder {
             Self {
                 meta: Err("no value supplied for meta".to_string()),
                 producer: Err("no value supplied for producer".to_string()),
+                producers: Err("no value supplied for producers".to_string()),
                 products: Ok(Default::default()),
                 reviewers: Err("no value supplied for reviewers".to_string()),
             }
@@ -2014,6 +3029,16 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for producer: {}", e));
             self
         }
+        pub fn producers<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<serde_json::Value>,
+            T::Error: std::fmt::Display,
+        {
+            self.producers = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for producers: {}", e));
+            self
+        }
         pub fn products<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<super::ProducerProduct>>,
@@ -2036,11 +3061,12 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ProducerRoot> for super::ProducerRoot {
-        type Error = String;
-        fn try_from(value: ProducerRoot) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProducerRoot) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 meta: value.meta?,
                 producer: value.producer?,
+                producers: value.producers?,
                 products: value.products?,
                 reviewers: value.reviewers?,
             })
@@ -2051,6 +3077,7 @@ pub mod builder {
             Self {
                 meta: Ok(value.meta),
                 producer: Ok(value.producer),
+                producers: Ok(value.producers),
                 products: Ok(value.products),
                 reviewers: Ok(value.reviewers),
             }
@@ -2080,8 +3107,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ProductAvailability> for super::ProductAvailability {
-        type Error = String;
-        fn try_from(value: ProductAvailability) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProductAvailability) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 regions: value.regions?,
             })
@@ -2118,8 +3145,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ProductCategorisation> for super::ProductCategorisation {
-        type Error = String;
-        fn try_from(value: ProductCategorisation) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProductCategorisation) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 categories: value.categories?,
             })
@@ -2180,8 +3207,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ProductIds> for super::ProductIds {
-        type Error = String;
-        fn try_from(value: ProductIds) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProductIds) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 ean: value.ean?,
                 gtin: value.gtin?,
@@ -2222,8 +3249,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ProductOrigins> for super::ProductOrigins {
-        type Error = String;
-        fn try_from(value: ProductOrigins) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProductOrigins) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 producer_ids: value.producer_ids?,
             })
@@ -2272,8 +3299,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<RelatedProducts> for super::RelatedProducts {
-        type Error = String;
-        fn try_from(value: RelatedProducts) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: RelatedProducts) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 followed_by: value.followed_by?,
                 preceded_by: value.preceded_by?,
@@ -2312,8 +3339,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<Report> for super::Report {
-        type Error = String;
-        fn try_from(value: Report) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: Report) -> Result<Self, super::error::ConversionError> {
             Ok(Self { url: value.url? })
         }
     }
@@ -2430,8 +3457,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ReviewProducer> for super::ReviewProducer {
-        type Error = String;
-        fn try_from(value: ReviewProducer) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ReviewProducer) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -2480,7 +3507,7 @@ pub mod builder {
                 id: Err("no value supplied for id".to_string()),
                 ids: Err("no value supplied for ids".to_string()),
                 images: Ok(Default::default()),
-                names: Ok(Default::default()),
+                names: Err("no value supplied for names".to_string()),
                 origins: Ok(Default::default()),
                 related: Ok(Default::default()),
                 report: Ok(Default::default()),
@@ -2602,8 +3629,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ReviewProduct> for super::ReviewProduct {
-        type Error = String;
-        fn try_from(value: ReviewProduct) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ReviewProduct) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 availability: value.availability?,
                 categorisation: value.categorisation?,
@@ -2696,8 +3723,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ReviewerRoot> for super::ReviewerRoot {
-        type Error = String;
-        fn try_from(value: ReviewerRoot) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ReviewerRoot) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 meta: value.meta?,
                 producers: value.producers?,
@@ -2740,8 +3767,8 @@ pub mod builder {
         }
     }
     impl std::convert::TryFrom<ScoreReview> for super::ScoreReview {
-        type Error = String;
-        fn try_from(value: ScoreReview) -> Result<Self, String> {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ScoreReview) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 value: value.value?,
             })

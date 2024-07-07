@@ -13,18 +13,15 @@ use crate::{
 
 type Lines = std::io::Lines<std::io::BufReader<std::fs::File>>;
 
-fn build_content_iter(root: Root, path: &std::path::Path) -> Result<FileIter, errors::ReadError> {
-    Ok(FileIter {
-        variant: match root {
-            Root::CatalogerRoot(root) => FileIterVariant::Catalog(CatalogIter::from_root(root)),
-            Root::ProducerRoot(root) => FileIterVariant::Producer(ProducerIter::from_root(root)),
-            Root::ReviewerRoot(root) => FileIterVariant::Review(ReviewIter::from_root(root)),
-        },
-        path: path.to_owned(),
-    })
+fn build_content_iter(root: Root) -> FileIterVariant {
+    match root {
+        Root::CatalogerRoot(root) => FileIterVariant::Catalog(CatalogIter::from_root(root)),
+        Root::ProducerRoot(root) => FileIterVariant::Producer(ProducerIter::from_root(root)),
+        Root::ReviewerRoot(root) => FileIterVariant::Review(ReviewIter::from_root(root)),
+    }
 }
 
-fn build_lines_iter(path: &std::path::Path) -> Result<FileIter, errors::ReadError> {
+fn build_lines_iter(path: &std::path::Path) -> Result<FileIterVariant, errors::ReadError> {
     let file = std::fs::File::open(path).context(errors::read::IoSnafu { path })?;
     let mut lines = std::io::BufReader::new(file).lines();
 
@@ -34,7 +31,7 @@ fn build_lines_iter(path: &std::path::Path) -> Result<FileIter, errors::ReadErro
             serde_json::from_str(&meta_str).context(errors::read::JsonSnafu { path })?;
         if let Some(about_str) = lines.next() {
             let about_str = about_str.context(errors::read::IoSnafu { path })?;
-            let variant = match meta.variant {
+            Ok(match meta.variant {
                 ProviderVariant::Cataloger => {
                     let _about: AboutCataloger = serde_json::from_str(&about_str)
                         .context(errors::read::JsonSnafu { path })?;
@@ -50,10 +47,6 @@ fn build_lines_iter(path: &std::path::Path) -> Result<FileIter, errors::ReadErro
                         .context(errors::read::JsonSnafu { path })?;
                     FileIterVariant::Review(ReviewIter::from_lines(lines, path.to_owned()))
                 }
-            };
-            Ok(FileIter {
-                variant,
-                path: path.to_owned(),
             })
         } else {
             Err(errors::SubstrateError::NoAbout).context(errors::read::SubstrateSnafu { path })
@@ -342,22 +335,17 @@ pub enum FileIterVariant {
     Review(ReviewIter),
 }
 
-pub struct FileIter {
-    pub variant: FileIterVariant,
-    pub path: std::path::PathBuf,
-}
-
-pub fn iter_file(path: &std::path::Path) -> Result<FileIter, errors::ReadError> {
+pub fn iter_file(path: &std::path::Path) -> Result<FileIterVariant, errors::ReadError> {
     match defs::get_extension(path) {
         Some(defs::SubstrateExtension::Yaml) => {
             let contents = std::fs::read_to_string(path).context(errors::read::IoSnafu { path })?;
             let root = serde_yaml::from_str(&contents).context(errors::read::YamlSnafu { path })?;
-            build_content_iter(root, path)
+            Ok(build_content_iter(root))
         }
         Some(defs::SubstrateExtension::Json) => {
             let contents = std::fs::read_to_string(path).context(errors::read::IoSnafu { path })?;
             let root = serde_json::from_str(&contents).context(errors::read::JsonSnafu { path })?;
-            build_content_iter(root, path)
+            Ok(build_content_iter(root))
         }
         Some(defs::SubstrateExtension::JsonLines) => build_lines_iter(path),
         None => Err(errors::ReadError::Substrate {
@@ -365,49 +353,4 @@ pub fn iter_file(path: &std::path::Path) -> Result<FileIter, errors::ReadError> 
             path: path.to_owned(),
         }),
     }
-}
-
-pub struct DirIter {
-    path: std::path::PathBuf,
-    dir_iter: std::fs::ReadDir,
-}
-
-impl DirIter {
-    pub fn new(path: &std::path::Path) -> Result<Self, errors::ReadError> {
-        Ok(Self {
-            path: path.to_owned(),
-            dir_iter: std::fs::read_dir(path).context(errors::read::IoSnafu { path })?,
-        })
-    }
-}
-
-impl std::iter::Iterator for DirIter {
-    type Item = Result<FileIter, errors::ReadError>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        loop {
-            if let Some(entry) = self.dir_iter.next() {
-                match entry {
-                    Ok(entry) => {
-                        let path = entry.path();
-                        if !path.is_file() {
-                            continue;
-                        }
-                        return Some(iter_file(&path));
-                    }
-                    Err(err) => {
-                        return Some(Err(err).context(errors::read::IoSnafu {
-                            path: self.path.clone(),
-                        }))
-                    }
-                }
-            } else {
-                return None;
-            }
-        }
-    }
-}
-
-pub fn iter_dir(path: &std::path::Path) -> Result<DirIter, errors::ReadError> {
-    DirIter::new(path)
 }

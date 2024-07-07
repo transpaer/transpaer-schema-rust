@@ -6,6 +6,7 @@ mod merge;
 mod models;
 pub mod read;
 mod save;
+mod sort;
 
 pub use chrono;
 pub use data::*;

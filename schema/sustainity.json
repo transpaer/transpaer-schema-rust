@@ -131,6 +131,13 @@
             "type": "string"
           },
           "uniqueItems": true
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
         }
       }
     },
@@ -240,7 +247,9 @@
       "type": "object",
       "properties": {
         "value": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       },
       "required": [
@@ -430,7 +439,7 @@
             "type": "string"
           }
         },
-        "categorisation:": {
+        "categorisation": {
           "$ref": "#/$defs/productCategorisation"
         },
         "origins": {
@@ -446,7 +455,7 @@
       "required": [
         "id",
         "ids",
-        "name"
+        "names"
       ]
     },
     "producerProduct": {
@@ -473,7 +482,7 @@
             "type": "string"
           }
         },
-        "categorisation:": {
+        "categorisation": {
           "$ref": "#/$defs/productCategorisation"
         },
         "origins": {
@@ -540,7 +549,7 @@
       "required": [
         "id",
         "ids",
-        "name"
+        "names"
       ]
     },
     "aboutReviewer": {

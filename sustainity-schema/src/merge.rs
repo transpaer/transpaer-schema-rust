@@ -1,11 +1,10 @@
 use std::collections::HashSet;
 
-// XXX test
+// TODO: should error if strings are not the same.
 fn merge_optional_strings(s1: &Option<String>, s2: &Option<String>) -> Option<String> {
     s1.as_ref().or(s2.as_ref()).cloned()
 }
 
-// XXX test
 fn merge_unique_string_slices(v1: &[String], v2: &[String]) -> Vec<String> {
     let mut result = Vec::from(v1);
     let mut strings: HashSet<String> = v1.iter().cloned().collect();
@@ -14,10 +13,11 @@ fn merge_unique_string_slices(v1: &[String], v2: &[String]) -> Vec<String> {
             result.push(string.clone());
         }
     }
+    result.sort();
     result
 }
 
-// XXX test
+// TODO: should error if strings are not the same.
 fn merge_optional_unique_string_vectors(
     v1: &Option<Vec<String>>,
     v2: &Option<Vec<String>>,
@@ -30,17 +30,16 @@ fn merge_optional_unique_string_vectors(
     }
 }
 
-// XXX test
 impl crate::ProducerIds {
     pub fn merge(&self, other: &Self) -> Self {
         Self {
             vat: merge_optional_unique_string_vectors(&self.vat, &other.vat),
             wiki: merge_optional_unique_string_vectors(&self.wiki, &other.wiki),
+            domains: merge_optional_unique_string_vectors(&self.domains, &other.domains),
         }
     }
 }
 
-// XXX test
 impl crate::Report {
     pub fn merge(&self, other: &Self) -> Self {
         Self {
@@ -49,37 +48,32 @@ impl crate::Report {
     }
 }
 
-// XXX test
+// TODO: should error if reports are not the same.
 fn merge_optional_reports(
     r1: &Option<crate::Report>,
     r2: &Option<crate::Report>,
 ) -> Option<crate::Report> {
-    // XXX TODO
     r1.as_ref().or(r2.as_ref()).cloned()
 }
 
-// XXX test
 impl crate::Review {
-    pub fn merge(&self, other: &Self) -> Self {
+    pub fn try_merge(&self, other: &Self) -> Result<Self, ()> {
         if self.eq(other) {
-            self.clone()
+            Ok(self.clone())
         } else {
-            // XXX TODO
-            panic!("XXX 4938");
+            Err(())
         }
     }
 }
 
-// XXX test
+// TODO: should error if reviews are not the same.
 fn merge_optional_reviews(
     r1: &Option<crate::Review>,
     r2: &Option<crate::Review>,
 ) -> Option<crate::Review> {
-    // XXX TODO
     r1.as_ref().or(r2.as_ref()).cloned()
 }
 
-// XXX test
 impl crate::CatalogProducer {
     pub fn merge(&self, other: &Self) -> Self {
         Self {
@@ -93,7 +87,6 @@ impl crate::CatalogProducer {
     }
 }
 
-// XXX test
 impl crate::ReviewProducer {
     pub fn merge(&self, other: &Self) -> Self {
         Self {
@@ -106,5 +99,54 @@ impl crate::ReviewProducer {
             images: merge_unique_string_slices(&self.images, &other.images),
             websites: merge_unique_string_slices(&self.websites, &other.websites),
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_merge_optional_strings() {
+        let a = Some("a".to_string());
+        let b = Some("b".to_string());
+        assert_eq!(merge_optional_strings(&None, &None), None);
+        assert_eq!(merge_optional_strings(&a, &None), a);
+        assert_eq!(merge_optional_strings(&None, &b), b);
+        assert_eq!(merge_optional_strings(&a, &b), a);
+    }
+
+    #[test]
+    fn test_merge_unique_string_slices() {
+        let a = "a".to_string();
+        let b = "b".to_string();
+        let c = "c".to_string();
+        assert_eq!(
+            merge_unique_string_slices(&[c.clone(), b.clone()], &[b.clone(), a.clone()]),
+            vec![a, b, c]
+        );
+    }
+
+    #[test]
+    fn test_merge_optional_unique_string_vectors() {
+        let a = "a".to_string();
+        let b = "b".to_string();
+        let c = "c".to_string();
+        assert_eq!(merge_optional_strings(&None, &None), None);
+        assert_eq!(
+            merge_optional_unique_string_vectors(&Some(vec![a.clone(), b.clone()]), &None),
+            Some(vec![a.clone(), b.clone()])
+        );
+        assert_eq!(
+            merge_optional_unique_string_vectors(&None, &Some(vec![a.clone(), b.clone()])),
+            Some(vec![a.clone(), b.clone()])
+        );
+        assert_eq!(
+            merge_optional_unique_string_vectors(
+                &Some(vec![c.clone(), b.clone()]),
+                &Some(vec![b.clone(), a.clone()])
+            ),
+            Some(vec![a, b, c])
+        );
     }
 }

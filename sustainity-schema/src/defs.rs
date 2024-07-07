@@ -1,4 +1,4 @@
-/// XXX
+/// Allowed substrate extensions.
 #[derive(Debug, Clone, Copy)]
 pub enum SubstrateExtension {
     Yaml,
