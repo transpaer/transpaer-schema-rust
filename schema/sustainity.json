@@ -199,6 +199,17 @@
           "items": {
             "type": "string"
           }
+        },
+        "regions": {
+          "$ref": "#/$defs/regionList"
+        }
+      }
+    },
+    "producerOrigins": {
+      "type": "object",
+      "properties": {
+        "regions": {
+          "$ref": "#/$defs/regionList"
         }
       }
     },
@@ -326,6 +337,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "origins": {
+          "$ref": "#/$defs/producerOrigins"
         }
       },
       "required": [
@@ -364,6 +378,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "origins": {
+          "$ref": "#/$defs/producerOrigins"
         }
       },
       "required": [
@@ -401,6 +418,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "origins": {
+          "$ref": "#/$defs/producerOrigins"
         },
         "report": {
           "$ref": "#/$defs/report"

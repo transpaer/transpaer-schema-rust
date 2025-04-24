@@ -148,6 +148,9 @@ impl From<serde_json::Map<String, serde_json::Value>> for AboutCertification {
 #[doc = "    \"name\": {"]
 #[doc = "      \"type\": \"string\""]
 #[doc = "    },"]
+#[doc = "    \"origins\": {"]
+#[doc = "      \"$ref\": \"#/$defs/producerOrigins\""]
+#[doc = "    },"]
 #[doc = "    \"websites\": {"]
 #[doc = "      \"type\": \"array\","]
 #[doc = "      \"items\": {"]
@@ -167,6 +170,8 @@ pub struct AboutProducer {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub images: Vec<String>,
     pub name: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub origins: Option<ProducerOrigins>,
     pub website: serde_json::Value,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub websites: Vec<String>,
@@ -347,6 +352,9 @@ impl AboutScoreReview {
 #[doc = "        \"type\": \"string\""]
 #[doc = "      }"]
 #[doc = "    },"]
+#[doc = "    \"origins\": {"]
+#[doc = "      \"$ref\": \"#/$defs/producerOrigins\""]
+#[doc = "    },"]
 #[doc = "    \"websites\": {"]
 #[doc = "      \"type\": \"array\","]
 #[doc = "      \"items\": {"]
@@ -366,6 +374,8 @@ pub struct CatalogProducer {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub images: Vec<String>,
     pub names: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub origins: Option<ProducerOrigins>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub websites: Vec<String>,
 }
@@ -799,6 +809,36 @@ impl ProducerIds {
         Default::default()
     }
 }
+#[doc = "ProducerOrigins"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"regions\": {"]
+#[doc = "      \"$ref\": \"#/$defs/regionList\""]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ProducerOrigins {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub regions: Option<RegionList>,
+}
+impl From<&ProducerOrigins> for ProducerOrigins {
+    fn from(value: &ProducerOrigins) -> Self {
+        value.clone()
+    }
+}
+impl ProducerOrigins {
+    pub fn builder() -> builder::ProducerOrigins {
+        Default::default()
+    }
+}
 #[doc = "ProducerProduct"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
@@ -1149,6 +1189,9 @@ impl ProductIds {
 #[doc = "      \"items\": {"]
 #[doc = "        \"type\": \"string\""]
 #[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"regions\": {"]
+#[doc = "      \"$ref\": \"#/$defs/regionList\""]
 #[doc = "    }"]
 #[doc = "  }"]
 #[doc = "}"]
@@ -1158,6 +1201,8 @@ impl ProductIds {
 pub struct ProductOrigins {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub producer_ids: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub regions: Option<RegionList>,
 }
 impl From<&ProductOrigins> for ProductOrigins {
     fn from(value: &ProductOrigins) -> Self {
@@ -1518,6 +1563,9 @@ impl From<Certification> for Review {
 #[doc = "        \"type\": \"string\""]
 #[doc = "      }"]
 #[doc = "    },"]
+#[doc = "    \"origins\": {"]
+#[doc = "      \"$ref\": \"#/$defs/producerOrigins\""]
+#[doc = "    },"]
 #[doc = "    \"report\": {"]
 #[doc = "      \"$ref\": \"#/$defs/report\""]
 #[doc = "    },"]
@@ -1543,6 +1591,8 @@ pub struct ReviewProducer {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub images: Vec<String>,
     pub names: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub origins: Option<ProducerOrigins>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub report: Option<Report>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1889,6 +1939,7 @@ pub mod builder {
         ids: Result<super::ProducerIds, String>,
         images: Result<Vec<String>, String>,
         name: Result<String, String>,
+        origins: Result<Option<super::ProducerOrigins>, String>,
         website: Result<serde_json::Value, String>,
         websites: Result<Vec<String>, String>,
     }
@@ -1900,6 +1951,7 @@ pub mod builder {
                 ids: Err("no value supplied for ids".to_string()),
                 images: Ok(Default::default()),
                 name: Err("no value supplied for name".to_string()),
+                origins: Ok(Default::default()),
                 website: Err("no value supplied for website".to_string()),
                 websites: Ok(Default::default()),
             }
@@ -1956,6 +2008,16 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for name: {}", e));
             self
         }
+        pub fn origins<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<super::ProducerOrigins>>,
+            T::Error: std::fmt::Display,
+        {
+            self.origins = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for origins: {}", e));
+            self
+        }
         pub fn website<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<serde_json::Value>,
@@ -1986,6 +2048,7 @@ pub mod builder {
                 ids: value.ids?,
                 images: value.images?,
                 name: value.name?,
+                origins: value.origins?,
                 website: value.website?,
                 websites: value.websites?,
             })
@@ -1999,6 +2062,7 @@ pub mod builder {
                 ids: Ok(value.ids),
                 images: Ok(value.images),
                 name: Ok(value.name),
+                origins: Ok(value.origins),
                 website: Ok(value.website),
                 websites: Ok(value.websites),
             }
@@ -2171,6 +2235,7 @@ pub mod builder {
         ids: Result<super::ProducerIds, String>,
         images: Result<Vec<String>, String>,
         names: Result<Vec<String>, String>,
+        origins: Result<Option<super::ProducerOrigins>, String>,
         websites: Result<Vec<String>, String>,
     }
     impl Default for CatalogProducer {
@@ -2181,6 +2246,7 @@ pub mod builder {
                 ids: Err("no value supplied for ids".to_string()),
                 images: Ok(Default::default()),
                 names: Err("no value supplied for names".to_string()),
+                origins: Ok(Default::default()),
                 websites: Ok(Default::default()),
             }
         }
@@ -2236,6 +2302,16 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for names: {}", e));
             self
         }
+        pub fn origins<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<super::ProducerOrigins>>,
+            T::Error: std::fmt::Display,
+        {
+            self.origins = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for origins: {}", e));
+            self
+        }
         pub fn websites<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<String>>,
@@ -2256,6 +2332,7 @@ pub mod builder {
                 ids: value.ids?,
                 images: value.images?,
                 names: value.names?,
+                origins: value.origins?,
                 websites: value.websites?,
             })
         }
@@ -2268,6 +2345,7 @@ pub mod builder {
                 ids: Ok(value.ids),
                 images: Ok(value.images),
                 names: Ok(value.names),
+                origins: Ok(value.origins),
                 websites: Ok(value.websites),
             }
         }
@@ -2742,6 +2820,44 @@ pub mod builder {
                 domains: Ok(value.domains),
                 vat: Ok(value.vat),
                 wiki: Ok(value.wiki),
+            }
+        }
+    }
+    #[derive(Clone, Debug)]
+    pub struct ProducerOrigins {
+        regions: Result<Option<super::RegionList>, String>,
+    }
+    impl Default for ProducerOrigins {
+        fn default() -> Self {
+            Self {
+                regions: Ok(Default::default()),
+            }
+        }
+    }
+    impl ProducerOrigins {
+        pub fn regions<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<super::RegionList>>,
+            T::Error: std::fmt::Display,
+        {
+            self.regions = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for regions: {}", e));
+            self
+        }
+    }
+    impl std::convert::TryFrom<ProducerOrigins> for super::ProducerOrigins {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProducerOrigins) -> Result<Self, super::error::ConversionError> {
+            Ok(Self {
+                regions: value.regions?,
+            })
+        }
+    }
+    impl From<super::ProducerOrigins> for ProducerOrigins {
+        fn from(value: super::ProducerOrigins) -> Self {
+            Self {
+                regions: Ok(value.regions),
             }
         }
     }
@@ -3228,11 +3344,13 @@ pub mod builder {
     #[derive(Clone, Debug)]
     pub struct ProductOrigins {
         producer_ids: Result<Vec<String>, String>,
+        regions: Result<Option<super::RegionList>, String>,
     }
     impl Default for ProductOrigins {
         fn default() -> Self {
             Self {
                 producer_ids: Ok(Default::default()),
+                regions: Ok(Default::default()),
             }
         }
     }
@@ -3247,12 +3365,23 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for producer_ids: {}", e));
             self
         }
+        pub fn regions<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<super::RegionList>>,
+            T::Error: std::fmt::Display,
+        {
+            self.regions = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for regions: {}", e));
+            self
+        }
     }
     impl std::convert::TryFrom<ProductOrigins> for super::ProductOrigins {
         type Error = super::error::ConversionError;
         fn try_from(value: ProductOrigins) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 producer_ids: value.producer_ids?,
+                regions: value.regions?,
             })
         }
     }
@@ -3260,6 +3389,7 @@ pub mod builder {
         fn from(value: super::ProductOrigins) -> Self {
             Self {
                 producer_ids: Ok(value.producer_ids),
+                regions: Ok(value.regions),
             }
         }
     }
@@ -3356,6 +3486,7 @@ pub mod builder {
         ids: Result<super::ProducerIds, String>,
         images: Result<Vec<String>, String>,
         names: Result<Vec<String>, String>,
+        origins: Result<Option<super::ProducerOrigins>, String>,
         report: Result<Option<super::Report>, String>,
         review: Result<Option<super::Review>, String>,
         websites: Result<Vec<String>, String>,
@@ -3368,6 +3499,7 @@ pub mod builder {
                 ids: Err("no value supplied for ids".to_string()),
                 images: Ok(Default::default()),
                 names: Err("no value supplied for names".to_string()),
+                origins: Ok(Default::default()),
                 report: Ok(Default::default()),
                 review: Ok(Default::default()),
                 websites: Ok(Default::default()),
@@ -3425,6 +3557,16 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for names: {}", e));
             self
         }
+        pub fn origins<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<super::ProducerOrigins>>,
+            T::Error: std::fmt::Display,
+        {
+            self.origins = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for origins: {}", e));
+            self
+        }
         pub fn report<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Option<super::Report>>,
@@ -3465,6 +3607,7 @@ pub mod builder {
                 ids: value.ids?,
                 images: value.images?,
                 names: value.names?,
+                origins: value.origins?,
                 report: value.report?,
                 review: value.review?,
                 websites: value.websites?,
@@ -3479,6 +3622,7 @@ pub mod builder {
                 ids: Ok(value.ids),
                 images: Ok(value.images),
                 names: Ok(value.names),
+                origins: Ok(value.origins),
                 report: Ok(value.report),
                 review: Ok(value.review),
                 websites: Ok(value.websites),

@@ -30,6 +30,41 @@ fn merge_optional_unique_string_vectors(
     }
 }
 
+fn merge_optional_producer_origins(
+    p1: &Option<crate::ProducerOrigins>,
+    p2: &Option<crate::ProducerOrigins>,
+) -> Option<crate::ProducerOrigins> {
+    match (&p1, &p2) {
+        (Some(r1), Some(r2)) => Some(merge_producer_origins(&r1, &r2)),
+        (Some(_), None) => p1.clone(),
+        (None, Some(_)) => p2.clone(),
+        (None, None) => None,
+    }
+}
+
+fn merge_producer_origins(
+    p1: &crate::ProducerOrigins,
+    p2: &crate::ProducerOrigins,
+) -> crate::ProducerOrigins {
+    match (&p1.regions, &p2.regions) {
+        (Some(r1), Some(r2)) => crate::ProducerOrigins {
+            regions: Some(merge_region_lists(&r1, &r2)),
+        },
+        (Some(_), None) => p1.clone(),
+        (None, Some(_)) => p2.clone(),
+        (None, None) => crate::ProducerOrigins { regions: None },
+    }
+}
+
+fn merge_region_lists(p1: &crate::RegionList, p2: &crate::RegionList) -> crate::RegionList {
+    let mut regions = HashSet::new();
+    regions.extend(p1.0.iter().cloned());
+    regions.extend(p2.0.iter().cloned());
+    let mut regions: Vec<_> = regions.into_iter().collect();
+    regions.sort();
+    crate::RegionList(regions)
+}
+
 impl crate::ProducerIds {
     pub fn merge(&self, other: &Self) -> Self {
         Self {
@@ -83,6 +118,7 @@ impl crate::CatalogProducer {
             description: merge_optional_strings(&self.description, &other.description),
             images: merge_unique_string_slices(&self.images, &other.images),
             websites: merge_unique_string_slices(&self.websites, &other.websites),
+            origins: merge_optional_producer_origins(&self.origins, &other.origins),
         }
     }
 }
@@ -98,6 +134,7 @@ impl crate::ReviewProducer {
             description: merge_optional_strings(&self.description, &other.description),
             images: merge_unique_string_slices(&self.images, &other.images),
             websites: merge_unique_string_slices(&self.websites, &other.websites),
+            origins: merge_optional_producer_origins(&self.origins, &other.origins),
         }
     }
 }
