@@ -1,9 +1,14 @@
+#[allow(
+    clippy::large_enum_variant,
+    clippy::should_implement_trait,
+    clippy::to_string_trait_impl
+)]
+mod models;
+
 mod data;
 mod defs;
 pub mod errors;
 mod merge;
-#[allow(clippy::large_enum_variant)]
-mod models;
 pub mod read;
 mod save;
 mod sort;

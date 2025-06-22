@@ -35,7 +35,7 @@ fn merge_optional_producer_origins(
     p2: &Option<crate::ProducerOrigins>,
 ) -> Option<crate::ProducerOrigins> {
     match (&p1, &p2) {
-        (Some(r1), Some(r2)) => Some(merge_producer_origins(&r1, &r2)),
+        (Some(r1), Some(r2)) => Some(merge_producer_origins(r1, r2)),
         (Some(_), None) => p1.clone(),
         (None, Some(_)) => p2.clone(),
         (None, None) => None,
@@ -48,7 +48,7 @@ fn merge_producer_origins(
 ) -> crate::ProducerOrigins {
     match (&p1.regions, &p2.regions) {
         (Some(r1), Some(r2)) => crate::ProducerOrigins {
-            regions: Some(merge_region_lists(&r1, &r2)),
+            regions: Some(merge_region_lists(r1, r2)),
         },
         (Some(_), None) => p1.clone(),
         (None, Some(_)) => p2.clone(),
@@ -78,6 +78,7 @@ impl crate::ProducerIds {
 impl crate::Report {
     pub fn merge(&self, other: &Self) -> Self {
         Self {
+            title: merge_optional_strings(&self.title, &other.title),
             url: merge_optional_strings(&self.url, &other.url),
         }
     }
@@ -85,20 +86,10 @@ impl crate::Report {
 
 // TODO: should error if reports are not the same.
 fn merge_optional_reports(
-    r1: &Option<crate::Report>,
-    r2: &Option<crate::Report>,
-) -> Option<crate::Report> {
+    r1: &Option<crate::Reports>,
+    r2: &Option<crate::Reports>,
+) -> Option<crate::Reports> {
     r1.as_ref().or(r2.as_ref()).cloned()
-}
-
-impl crate::Review {
-    pub fn try_merge(&self, other: &Self) -> Result<Self, ()> {
-        if self.eq(other) {
-            Ok(self.clone())
-        } else {
-            Err(())
-        }
-    }
 }
 
 // TODO: should error if reviews are not the same.
@@ -128,13 +119,13 @@ impl crate::ReviewProducer {
         Self {
             id: self.id.clone(),
             ids: self.ids.merge(&other.ids),
-            report: merge_optional_reports(&self.report, &other.report),
-            review: merge_optional_reviews(&self.review, &other.review),
             names: merge_unique_string_slices(&self.names, &other.names),
             description: merge_optional_strings(&self.description, &other.description),
             images: merge_unique_string_slices(&self.images, &other.images),
             websites: merge_unique_string_slices(&self.websites, &other.websites),
             origins: merge_optional_producer_origins(&self.origins, &other.origins),
+            reports: merge_optional_reports(&self.reports, &other.reports),
+            review: merge_optional_reviews(&self.review, &other.review),
         }
     }
 }
