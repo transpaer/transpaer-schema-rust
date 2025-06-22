@@ -79,7 +79,7 @@ impl std::iter::Iterator for ContentCatalogIter {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.index += 1;
-        self.content.get(self.index).map(|e| Ok(e.clone()))
+        self.content.get(self.index - 1).map(|e| Ok(e.clone()))
     }
 }
 
@@ -170,7 +170,7 @@ impl std::iter::Iterator for ContentProducerIter {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.index += 1;
-        self.content.get(self.index).map(|e| Ok(e.clone()))
+        self.content.get(self.index - 1).map(|e| Ok(e.clone()))
     }
 }
 
@@ -261,7 +261,7 @@ impl std::iter::Iterator for ContentReviewIter {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.index += 1;
-        self.content.get(self.index).map(|e| Ok(e.clone()))
+        self.content.get(self.index - 1).map(|e| Ok(e.clone()))
     }
 }
 

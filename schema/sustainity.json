@@ -213,12 +213,53 @@
         }
       }
     },
+    "shopping": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/shoppingEntry"
+      }
+    },
+    "shoppingEntry": {
+      "type": "object",
+      "properties": {
+        "shop": {
+          "$ref": "#/$defs/verifiedShop"
+        },
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "shop",
+        "id",
+        "description"
+      ]
+    },
+    "verifiedShop": {
+      "type": "string",
+      "enum": [
+        "fairphone",
+        "amazon"
+      ]
+    },
     "report": {
       "type": "object",
       "properties": {
+        "title": {
+          "type": "string"
+        },
         "url": {
           "type": "string"
         }
+      }
+    },
+    "reports": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/report"
       }
     },
     "aboutScoreReview": {
@@ -275,6 +316,21 @@
         }
       }
     },
+    "mention": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "url"
+      ]
+    },
     "review": {
       "oneOf": [
         {
@@ -282,6 +338,9 @@
         },
         {
           "$ref": "#/$defs/certification"
+        },
+        {
+          "$ref": "#/$defs/mention"
         }
       ]
     },
@@ -422,8 +481,8 @@
         "origins": {
           "$ref": "#/$defs/producerOrigins"
         },
-        "report": {
-          "$ref": "#/$defs/report"
+        "reports": {
+          "$ref": "#/$defs/reports"
         },
         "review": {
           "$ref": "#/$defs/review"
@@ -470,6 +529,9 @@
         },
         "related": {
           "$ref": "#/$defs/relatedProducts"
+        },
+        "shopping": {
+          "$ref": "#/$defs/shopping"
         }
       },
       "required": [
@@ -513,6 +575,9 @@
         },
         "related": {
           "$ref": "#/$defs/relatedProducts"
+        },
+        "shopping": {
+          "$ref": "#/$defs/shopping"
         }
       },
       "required": [
@@ -559,8 +624,11 @@
         "related": {
           "$ref": "#/$defs/relatedProducts"
         },
-        "report": {
-          "$ref": "#/$defs/report"
+        "shopping": {
+          "$ref": "#/$defs/shopping"
+        },
+        "reports": {
+          "$ref": "#/$defs/reports"
         },
         "review": {
           "$ref": "#/$defs/review"
