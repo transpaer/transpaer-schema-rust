@@ -149,7 +149,7 @@ impl crate::ReviewProducer {
     }
 }
 
-impl crate::CatalogerRoot {
+impl crate::CatalogerData {
     pub fn sort(&mut self) {
         for producer in &mut self.producers {
             producer.sort();
@@ -160,7 +160,7 @@ impl crate::CatalogerRoot {
     }
 }
 
-impl crate::ProducerRoot {
+impl crate::ProducerData {
     pub fn sort(&mut self) {
         for product in &mut self.products {
             product.sort();
@@ -171,7 +171,7 @@ impl crate::ProducerRoot {
     }
 }
 
-impl crate::ReviewerRoot {
+impl crate::ReviewerData {
     pub fn sort(&mut self) {
         for producer in &mut self.producers {
             producer.sort();
@@ -182,12 +182,12 @@ impl crate::ReviewerRoot {
     }
 }
 
-impl crate::Root {
+impl crate::data::Substrate {
     pub fn sort(&mut self) {
-        match self {
-            Self::CatalogerRoot(root) => root.sort(),
-            Self::ProducerRoot(root) => root.sort(),
-            Self::ReviewerRoot(root) => root.sort(),
+        match &mut self.data {
+            crate::data::Data::Cataloger(data) => data.sort(),
+            crate::data::Data::Producer(data) => data.sort(),
+            crate::data::Data::Reviewer(data) => data.sort(),
         }
     }
 }

@@ -172,10 +172,7 @@
       ]
     },
     "productCategory": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "type": "string"
     },
     "productCategorisation": {
       "type": "object",
@@ -405,7 +402,7 @@
         "id",
         "ids",
         "name",
-        "website"
+        "websites"
       ]
     },
     "catalogProducer": {
@@ -583,7 +580,7 @@
       "required": [
         "id",
         "ids",
-        "name",
+        "names",
         "description",
         "categorisation"
       ]
@@ -684,15 +681,12 @@
       },
       "required": [
         "id",
-        "name"
+        "names"
       ]
     },
-    "catalogerRoot": {
+    "catalogerData": {
       "type": "object",
       "properties": {
-        "meta": {
-          "$ref": "#/$defs/meta"
-        },
         "cataloger": {
           "$ref": "#/$defs/aboutCataloger"
         },
@@ -710,18 +704,14 @@
         }
       },
       "required": [
-        "meta",
         "cataloger",
         "producers",
         "products"
       ]
     },
-    "producerRoot": {
+    "producerData": {
       "type": "object",
       "properties": {
-        "meta": {
-          "$ref": "#/$defs/meta"
-        },
         "producer": {
           "$ref": "#/$defs/aboutProducer"
         },
@@ -739,18 +729,14 @@
         }
       },
       "required": [
-        "meta",
         "producer",
-        "producers",
+        "products",
         "reviewers"
       ]
     },
-    "reviewerRoot": {
+    "reviewerData": {
       "type": "object",
       "properties": {
-        "meta": {
-          "$ref": "#/$defs/meta"
-        },
         "reviewer": {
           "$ref": "#/$defs/aboutReviewer"
         },
@@ -768,26 +754,10 @@
         }
       },
       "required": [
-        "meta",
         "reviewer",
         "producers",
         "products"
       ]
-    },
-    "root": {
-      "oneOf": [
-        {
-          "$ref": "#/$defs/catalogerRoot"
-        },
-        {
-          "$ref": "#/$defs/producerRoot"
-        },
-        {
-          "$ref": "#/$defs/reviewerRoot"
-        }
-      ]
     }
-  },
-  "type": "object",
-  "$ref": "#/$defs/root"
+  }
 }

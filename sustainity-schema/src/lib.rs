@@ -1,7 +1,8 @@
 #[allow(
     clippy::large_enum_variant,
     clippy::should_implement_trait,
-    clippy::to_string_trait_impl
+    clippy::to_string_trait_impl,
+    clippy::uninlined_format_args
 )]
 mod models;
 
