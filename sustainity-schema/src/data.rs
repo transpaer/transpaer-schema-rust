@@ -12,6 +12,7 @@ pub enum CatalogEntry {
     Product(models::CatalogProduct),
 }
 
+#[allow(clippy::large_enum_variant)]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub enum ProducerEntry {
@@ -30,4 +31,17 @@ pub enum ReviewEntry {
 
     #[serde(rename = "product")]
     Product(models::ReviewProduct),
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub enum Data {
+    Cataloger(models::CatalogerData),
+    Producer(models::ProducerData),
+    Reviewer(models::ReviewerData),
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Substrate {
+    pub meta: models::Meta,
+    pub data: Data,
 }

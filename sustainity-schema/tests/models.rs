@@ -2,27 +2,48 @@ use pretty_assertions::assert_eq;
 
 use sustainity_schema as schema;
 
-/// TODO: Add json and jsonl parsing.
-/// TODO: Add review and producer roots.
+// TODO: Add json and jsonl parsing.
+// TODO: Add review and producer roots.
+
 #[test]
-fn serde_cataloger_root() {
-    let value = schema::Root::CatalogerRoot(schema::CatalogerRoot {
+fn serde_meta() {
+    let value = schema::Meta {
+        authors: vec!["Sustainity Testing Team".to_owned()],
+        creation_timestamp: None,
+        description: None,
+        title: "models fixture 1".to_owned(),
+        valid_from: None,
+        valid_to: None,
+        variant: schema::ProviderVariant::Cataloger,
+        version: "0.0.1".to_owned(),
+    };
+
+    let yaml_string = indoc::indoc!(
+        r#"
+        authors:
+        - Sustainity Testing Team
+        title: models fixture 1
+        variant: cataloger
+        version: 0.0.1
+        "#
+    );
+
+    let received_yaml_string = serde_yaml::to_string(&value).unwrap();
+    assert_eq!(yaml_string, received_yaml_string);
+
+    let received_value = serde_yaml::from_str(&yaml_string).unwrap();
+    assert_eq!(value, received_value);
+}
+
+#[test]
+fn serde_cataloger_data() {
+    let value = schema::CatalogerData {
         cataloger: schema::AboutCataloger {
             description: Some("Test Cataloger".to_owned()),
             id: "test test".to_owned(),
             name: "Tester".to_owned(),
             variant: schema::CatalogVariant::Store,
             website: "https://www.example.com/".to_owned(),
-        },
-        meta: schema::Meta {
-            authors: vec!["Sustainity Testing Team".to_owned()],
-            creation_timestamp: None,
-            description: None,
-            title: "models fixture 1".to_owned(),
-            valid_from: None,
-            valid_to: None,
-            variant: schema::ProviderVariant::Cataloger,
-            version: "0.0.1".to_owned(),
         },
         producers: vec![schema::CatalogProducer {
             id: "fairphone".to_owned(),
@@ -53,7 +74,7 @@ fn serde_cataloger_root() {
             names: vec!["Fairphone 5".to_owned()],
             description: None,
             categorisation: Some(schema::ProductCategorisation {
-                categories: vec![schema::ProductCategory(vec!["smartphone".to_owned()])],
+                categories: vec![schema::ProductCategory("smartphone".to_owned())],
             }),
             availability: None,
             images: Vec::new(),
@@ -87,7 +108,7 @@ fn serde_cataloger_root() {
                 },
             ])),
         }],
-    });
+    };
 
     let yaml_string = indoc::indoc!(
         r#"
@@ -97,12 +118,6 @@ fn serde_cataloger_root() {
           name: Tester
           variant: store
           website: https://www.example.com/
-        meta:
-          authors:
-          - Sustainity Testing Team
-          title: models fixture 1
-          variant: cataloger
-          version: 0.0.1
         producers:
         - id: fairphone
           ids:
@@ -115,7 +130,7 @@ fn serde_cataloger_root() {
         products:
         - categorisation:
             categories:
-            - - smartphone
+            - smartphone
           id: fairphone-5
           ids:
             ean:

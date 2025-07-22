@@ -127,7 +127,7 @@ impl From<serde_json::Map<String, serde_json::Value>> for AboutCertification {
 #[doc = "    \"id\","]
 #[doc = "    \"ids\","]
 #[doc = "    \"name\","]
-#[doc = "    \"website\""]
+#[doc = "    \"websites\""]
 #[doc = "  ],"]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"description\": {"]
@@ -172,8 +172,6 @@ pub struct AboutProducer {
     pub name: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub origins: Option<ProducerOrigins>,
-    pub website: serde_json::Value,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub websites: Vec<String>,
 }
 impl From<&AboutProducer> for AboutProducer {
@@ -539,7 +537,7 @@ impl std::convert::TryFrom<String> for CatalogVariant {
         value.parse()
     }
 }
-#[doc = "CatalogerRoot"]
+#[doc = "CatalogerData"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -548,16 +546,12 @@ impl std::convert::TryFrom<String> for CatalogVariant {
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"required\": ["]
 #[doc = "    \"cataloger\","]
-#[doc = "    \"meta\","]
 #[doc = "    \"producers\","]
 #[doc = "    \"products\""]
 #[doc = "  ],"]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"cataloger\": {"]
 #[doc = "      \"$ref\": \"#/$defs/aboutCataloger\""]
-#[doc = "    },"]
-#[doc = "    \"meta\": {"]
-#[doc = "      \"$ref\": \"#/$defs/meta\""]
 #[doc = "    },"]
 #[doc = "    \"producers\": {"]
 #[doc = "      \"type\": \"array\","]
@@ -576,19 +570,18 @@ impl std::convert::TryFrom<String> for CatalogVariant {
 #[doc = r" ```"]
 #[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct CatalogerRoot {
+pub struct CatalogerData {
     pub cataloger: AboutCataloger,
-    pub meta: Meta,
     pub producers: Vec<CatalogProducer>,
     pub products: Vec<CatalogProduct>,
 }
-impl From<&CatalogerRoot> for CatalogerRoot {
-    fn from(value: &CatalogerRoot) -> Self {
+impl From<&CatalogerData> for CatalogerData {
+    fn from(value: &CatalogerData) -> Self {
         value.clone()
     }
 }
-impl CatalogerRoot {
-    pub fn builder() -> builder::CatalogerRoot {
+impl CatalogerData {
+    pub fn builder() -> builder::CatalogerData {
         Default::default()
     }
 }
@@ -799,6 +792,54 @@ impl Meta {
         Default::default()
     }
 }
+#[doc = "ProducerData"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"type\": \"object\","]
+#[doc = "  \"required\": ["]
+#[doc = "    \"producer\","]
+#[doc = "    \"products\","]
+#[doc = "    \"reviewers\""]
+#[doc = "  ],"]
+#[doc = "  \"properties\": {"]
+#[doc = "    \"producer\": {"]
+#[doc = "      \"$ref\": \"#/$defs/aboutProducer\""]
+#[doc = "    },"]
+#[doc = "    \"products\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/producerProduct\""]
+#[doc = "      }"]
+#[doc = "    },"]
+#[doc = "    \"reviewers\": {"]
+#[doc = "      \"type\": \"array\","]
+#[doc = "      \"items\": {"]
+#[doc = "        \"$ref\": \"#/$defs/producerReviewer\""]
+#[doc = "      }"]
+#[doc = "    }"]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ProducerData {
+    pub producer: AboutProducer,
+    pub products: Vec<ProducerProduct>,
+    pub reviewers: Vec<ProducerReviewer>,
+}
+impl From<&ProducerData> for ProducerData {
+    fn from(value: &ProducerData) -> Self {
+        value.clone()
+    }
+}
+impl ProducerData {
+    pub fn builder() -> builder::ProducerData {
+        Default::default()
+    }
+}
 #[doc = "ProducerIds"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
@@ -893,7 +934,7 @@ impl ProducerOrigins {
 #[doc = "    \"description\","]
 #[doc = "    \"id\","]
 #[doc = "    \"ids\","]
-#[doc = "    \"name\""]
+#[doc = "    \"names\""]
 #[doc = "  ],"]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"availability\": {"]
@@ -946,8 +987,6 @@ pub struct ProducerProduct {
     pub ids: ProductIds,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub images: Vec<String>,
-    pub name: serde_json::Value,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub names: Vec<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub origins: Option<ProductOrigins>,
@@ -975,7 +1014,7 @@ impl ProducerProduct {
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"required\": ["]
 #[doc = "    \"id\","]
-#[doc = "    \"name\""]
+#[doc = "    \"names\""]
 #[doc = "  ],"]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"description\": {"]
@@ -999,8 +1038,6 @@ pub struct ProducerReviewer {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     pub id: String,
-    pub name: serde_json::Value,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub names: Vec<String>,
 }
 impl From<&ProducerReviewer> for ProducerReviewer {
@@ -1010,61 +1047,6 @@ impl From<&ProducerReviewer> for ProducerReviewer {
 }
 impl ProducerReviewer {
     pub fn builder() -> builder::ProducerReviewer {
-        Default::default()
-    }
-}
-#[doc = "ProducerRoot"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"type\": \"object\","]
-#[doc = "  \"required\": ["]
-#[doc = "    \"meta\","]
-#[doc = "    \"producer\","]
-#[doc = "    \"producers\","]
-#[doc = "    \"reviewers\""]
-#[doc = "  ],"]
-#[doc = "  \"properties\": {"]
-#[doc = "    \"meta\": {"]
-#[doc = "      \"$ref\": \"#/$defs/meta\""]
-#[doc = "    },"]
-#[doc = "    \"producer\": {"]
-#[doc = "      \"$ref\": \"#/$defs/aboutProducer\""]
-#[doc = "    },"]
-#[doc = "    \"products\": {"]
-#[doc = "      \"type\": \"array\","]
-#[doc = "      \"items\": {"]
-#[doc = "        \"$ref\": \"#/$defs/producerProduct\""]
-#[doc = "      }"]
-#[doc = "    },"]
-#[doc = "    \"reviewers\": {"]
-#[doc = "      \"type\": \"array\","]
-#[doc = "      \"items\": {"]
-#[doc = "        \"$ref\": \"#/$defs/producerReviewer\""]
-#[doc = "      }"]
-#[doc = "    }"]
-#[doc = "  }"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct ProducerRoot {
-    pub meta: Meta,
-    pub producer: AboutProducer,
-    pub producers: serde_json::Value,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub products: Vec<ProducerProduct>,
-    pub reviewers: Vec<ProducerReviewer>,
-}
-impl From<&ProducerRoot> for ProducerRoot {
-    fn from(value: &ProducerRoot) -> Self {
-        value.clone()
-    }
-}
-impl ProducerRoot {
-    pub fn builder() -> builder::ProducerRoot {
         Default::default()
     }
 }
@@ -1141,22 +1123,19 @@ impl ProductCategorisation {
 #[doc = r""]
 #[doc = r" ```json"]
 #[doc = "{"]
-#[doc = "  \"type\": \"array\","]
-#[doc = "  \"items\": {"]
-#[doc = "    \"type\": \"string\""]
-#[doc = "  }"]
+#[doc = "  \"type\": \"string\""]
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct ProductCategory(pub Vec<String>);
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct ProductCategory(pub String);
 impl std::ops::Deref for ProductCategory {
-    type Target = Vec<String>;
-    fn deref(&self) -> &Vec<String> {
+    type Target = String;
+    fn deref(&self) -> &String {
         &self.0
     }
 }
-impl From<ProductCategory> for Vec<String> {
+impl From<ProductCategory> for String {
     fn from(value: ProductCategory) -> Self {
         value.0
     }
@@ -1166,9 +1145,20 @@ impl From<&ProductCategory> for ProductCategory {
         value.clone()
     }
 }
-impl From<Vec<String>> for ProductCategory {
-    fn from(value: Vec<String>) -> Self {
+impl From<String> for ProductCategory {
+    fn from(value: String) -> Self {
         Self(value)
+    }
+}
+impl std::str::FromStr for ProductCategory {
+    type Err = std::convert::Infallible;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        Ok(Self(value.to_string()))
+    }
+}
+impl ToString for ProductCategory {
+    fn to_string(&self) -> String {
+        self.0.to_string()
     }
 }
 #[doc = "ProductIds"]
@@ -1804,7 +1794,7 @@ impl ReviewProduct {
         Default::default()
     }
 }
-#[doc = "ReviewerRoot"]
+#[doc = "ReviewerData"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1812,15 +1802,11 @@ impl ReviewProduct {
 #[doc = "{"]
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"required\": ["]
-#[doc = "    \"meta\","]
 #[doc = "    \"producers\","]
 #[doc = "    \"products\","]
 #[doc = "    \"reviewer\""]
 #[doc = "  ],"]
 #[doc = "  \"properties\": {"]
-#[doc = "    \"meta\": {"]
-#[doc = "      \"$ref\": \"#/$defs/meta\""]
-#[doc = "    },"]
 #[doc = "    \"producers\": {"]
 #[doc = "      \"type\": \"array\","]
 #[doc = "      \"items\": {"]
@@ -1841,67 +1827,19 @@ impl ReviewProduct {
 #[doc = r" ```"]
 #[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct ReviewerRoot {
-    pub meta: Meta,
+pub struct ReviewerData {
     pub producers: Vec<ReviewProducer>,
     pub products: Vec<ReviewProduct>,
     pub reviewer: AboutReviewer,
 }
-impl From<&ReviewerRoot> for ReviewerRoot {
-    fn from(value: &ReviewerRoot) -> Self {
+impl From<&ReviewerData> for ReviewerData {
+    fn from(value: &ReviewerData) -> Self {
         value.clone()
     }
 }
-impl ReviewerRoot {
-    pub fn builder() -> builder::ReviewerRoot {
+impl ReviewerData {
+    pub fn builder() -> builder::ReviewerData {
         Default::default()
-    }
-}
-#[doc = "Root"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"oneOf\": ["]
-#[doc = "    {"]
-#[doc = "      \"$ref\": \"#/$defs/catalogerRoot\""]
-#[doc = "    },"]
-#[doc = "    {"]
-#[doc = "      \"$ref\": \"#/$defs/producerRoot\""]
-#[doc = "    },"]
-#[doc = "    {"]
-#[doc = "      \"$ref\": \"#/$defs/reviewerRoot\""]
-#[doc = "    }"]
-#[doc = "  ]"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(untagged)]
-pub enum Root {
-    CatalogerRoot(CatalogerRoot),
-    ProducerRoot(ProducerRoot),
-    ReviewerRoot(ReviewerRoot),
-}
-impl From<&Root> for Root {
-    fn from(value: &Root) -> Self {
-        value.clone()
-    }
-}
-impl From<CatalogerRoot> for Root {
-    fn from(value: CatalogerRoot) -> Self {
-        Self::CatalogerRoot(value)
-    }
-}
-impl From<ProducerRoot> for Root {
-    fn from(value: ProducerRoot) -> Self {
-        Self::ProducerRoot(value)
-    }
-}
-impl From<ReviewerRoot> for Root {
-    fn from(value: ReviewerRoot) -> Self {
-        Self::ReviewerRoot(value)
     }
 }
 #[doc = "ScoreReview"]
@@ -2182,7 +2120,6 @@ pub mod builder {
         images: Result<Vec<String>, String>,
         name: Result<String, String>,
         origins: Result<Option<super::ProducerOrigins>, String>,
-        website: Result<serde_json::Value, String>,
         websites: Result<Vec<String>, String>,
     }
     impl Default for AboutProducer {
@@ -2194,8 +2131,7 @@ pub mod builder {
                 images: Ok(Default::default()),
                 name: Err("no value supplied for name".to_string()),
                 origins: Ok(Default::default()),
-                website: Err("no value supplied for website".to_string()),
-                websites: Ok(Default::default()),
+                websites: Err("no value supplied for websites".to_string()),
             }
         }
     }
@@ -2260,16 +2196,6 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for origins: {}", e));
             self
         }
-        pub fn website<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<serde_json::Value>,
-            T::Error: std::fmt::Display,
-        {
-            self.website = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for website: {}", e));
-            self
-        }
         pub fn websites<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<String>>,
@@ -2291,7 +2217,6 @@ pub mod builder {
                 images: value.images?,
                 name: value.name?,
                 origins: value.origins?,
-                website: value.website?,
                 websites: value.websites?,
             })
         }
@@ -2305,7 +2230,6 @@ pub mod builder {
                 images: Ok(value.images),
                 name: Ok(value.name),
                 origins: Ok(value.origins),
-                website: Ok(value.website),
                 websites: Ok(value.websites),
             }
         }
@@ -2757,23 +2681,21 @@ pub mod builder {
         }
     }
     #[derive(Clone, Debug)]
-    pub struct CatalogerRoot {
+    pub struct CatalogerData {
         cataloger: Result<super::AboutCataloger, String>,
-        meta: Result<super::Meta, String>,
         producers: Result<Vec<super::CatalogProducer>, String>,
         products: Result<Vec<super::CatalogProduct>, String>,
     }
-    impl Default for CatalogerRoot {
+    impl Default for CatalogerData {
         fn default() -> Self {
             Self {
                 cataloger: Err("no value supplied for cataloger".to_string()),
-                meta: Err("no value supplied for meta".to_string()),
                 producers: Err("no value supplied for producers".to_string()),
                 products: Err("no value supplied for products".to_string()),
             }
         }
     }
-    impl CatalogerRoot {
+    impl CatalogerData {
         pub fn cataloger<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<super::AboutCataloger>,
@@ -2782,16 +2704,6 @@ pub mod builder {
             self.cataloger = value
                 .try_into()
                 .map_err(|e| format!("error converting supplied value for cataloger: {}", e));
-            self
-        }
-        pub fn meta<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<super::Meta>,
-            T::Error: std::fmt::Display,
-        {
-            self.meta = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for meta: {}", e));
             self
         }
         pub fn producers<T>(mut self, value: T) -> Self
@@ -2815,22 +2727,20 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<CatalogerRoot> for super::CatalogerRoot {
+    impl std::convert::TryFrom<CatalogerData> for super::CatalogerData {
         type Error = super::error::ConversionError;
-        fn try_from(value: CatalogerRoot) -> Result<Self, super::error::ConversionError> {
+        fn try_from(value: CatalogerData) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
                 cataloger: value.cataloger?,
-                meta: value.meta?,
                 producers: value.producers?,
                 products: value.products?,
             })
         }
     }
-    impl From<super::CatalogerRoot> for CatalogerRoot {
-        fn from(value: super::CatalogerRoot) -> Self {
+    impl From<super::CatalogerData> for CatalogerData {
+        fn from(value: super::CatalogerData) -> Self {
             Self {
                 cataloger: Ok(value.cataloger),
-                meta: Ok(value.meta),
                 producers: Ok(value.producers),
                 products: Ok(value.products),
             }
@@ -3066,6 +2976,72 @@ pub mod builder {
         }
     }
     #[derive(Clone, Debug)]
+    pub struct ProducerData {
+        producer: Result<super::AboutProducer, String>,
+        products: Result<Vec<super::ProducerProduct>, String>,
+        reviewers: Result<Vec<super::ProducerReviewer>, String>,
+    }
+    impl Default for ProducerData {
+        fn default() -> Self {
+            Self {
+                producer: Err("no value supplied for producer".to_string()),
+                products: Err("no value supplied for products".to_string()),
+                reviewers: Err("no value supplied for reviewers".to_string()),
+            }
+        }
+    }
+    impl ProducerData {
+        pub fn producer<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<super::AboutProducer>,
+            T::Error: std::fmt::Display,
+        {
+            self.producer = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for producer: {}", e));
+            self
+        }
+        pub fn products<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Vec<super::ProducerProduct>>,
+            T::Error: std::fmt::Display,
+        {
+            self.products = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for products: {}", e));
+            self
+        }
+        pub fn reviewers<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Vec<super::ProducerReviewer>>,
+            T::Error: std::fmt::Display,
+        {
+            self.reviewers = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for reviewers: {}", e));
+            self
+        }
+    }
+    impl std::convert::TryFrom<ProducerData> for super::ProducerData {
+        type Error = super::error::ConversionError;
+        fn try_from(value: ProducerData) -> Result<Self, super::error::ConversionError> {
+            Ok(Self {
+                producer: value.producer?,
+                products: value.products?,
+                reviewers: value.reviewers?,
+            })
+        }
+    }
+    impl From<super::ProducerData> for ProducerData {
+        fn from(value: super::ProducerData) -> Self {
+            Self {
+                producer: Ok(value.producer),
+                products: Ok(value.products),
+                reviewers: Ok(value.reviewers),
+            }
+        }
+    }
+    #[derive(Clone, Debug)]
     pub struct ProducerIds {
         domains: Result<Option<Vec<String>>, String>,
         vat: Result<Option<Vec<String>>, String>,
@@ -3177,7 +3153,6 @@ pub mod builder {
         id: Result<String, String>,
         ids: Result<super::ProductIds, String>,
         images: Result<Vec<String>, String>,
-        name: Result<serde_json::Value, String>,
         names: Result<Vec<String>, String>,
         origins: Result<Option<super::ProductOrigins>, String>,
         related: Result<Option<super::RelatedProducts>, String>,
@@ -3192,8 +3167,7 @@ pub mod builder {
                 id: Err("no value supplied for id".to_string()),
                 ids: Err("no value supplied for ids".to_string()),
                 images: Ok(Default::default()),
-                name: Err("no value supplied for name".to_string()),
-                names: Ok(Default::default()),
+                names: Err("no value supplied for names".to_string()),
                 origins: Ok(Default::default()),
                 related: Ok(Default::default()),
                 shopping: Ok(Default::default()),
@@ -3261,16 +3235,6 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for images: {}", e));
             self
         }
-        pub fn name<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<serde_json::Value>,
-            T::Error: std::fmt::Display,
-        {
-            self.name = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for name: {}", e));
-            self
-        }
         pub fn names<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<String>>,
@@ -3322,7 +3286,6 @@ pub mod builder {
                 id: value.id?,
                 ids: value.ids?,
                 images: value.images?,
-                name: value.name?,
                 names: value.names?,
                 origins: value.origins?,
                 related: value.related?,
@@ -3339,7 +3302,6 @@ pub mod builder {
                 id: Ok(value.id),
                 ids: Ok(value.ids),
                 images: Ok(value.images),
-                name: Ok(value.name),
                 names: Ok(value.names),
                 origins: Ok(value.origins),
                 related: Ok(value.related),
@@ -3351,7 +3313,6 @@ pub mod builder {
     pub struct ProducerReviewer {
         description: Result<Option<String>, String>,
         id: Result<String, String>,
-        name: Result<serde_json::Value, String>,
         names: Result<Vec<String>, String>,
     }
     impl Default for ProducerReviewer {
@@ -3359,8 +3320,7 @@ pub mod builder {
             Self {
                 description: Ok(Default::default()),
                 id: Err("no value supplied for id".to_string()),
-                name: Err("no value supplied for name".to_string()),
-                names: Ok(Default::default()),
+                names: Err("no value supplied for names".to_string()),
             }
         }
     }
@@ -3385,16 +3345,6 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for id: {}", e));
             self
         }
-        pub fn name<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<serde_json::Value>,
-            T::Error: std::fmt::Display,
-        {
-            self.name = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for name: {}", e));
-            self
-        }
         pub fn names<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<String>>,
@@ -3412,7 +3362,6 @@ pub mod builder {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
-                name: value.name?,
                 names: value.names?,
             })
         }
@@ -3422,102 +3371,7 @@ pub mod builder {
             Self {
                 description: Ok(value.description),
                 id: Ok(value.id),
-                name: Ok(value.name),
                 names: Ok(value.names),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
-    pub struct ProducerRoot {
-        meta: Result<super::Meta, String>,
-        producer: Result<super::AboutProducer, String>,
-        producers: Result<serde_json::Value, String>,
-        products: Result<Vec<super::ProducerProduct>, String>,
-        reviewers: Result<Vec<super::ProducerReviewer>, String>,
-    }
-    impl Default for ProducerRoot {
-        fn default() -> Self {
-            Self {
-                meta: Err("no value supplied for meta".to_string()),
-                producer: Err("no value supplied for producer".to_string()),
-                producers: Err("no value supplied for producers".to_string()),
-                products: Ok(Default::default()),
-                reviewers: Err("no value supplied for reviewers".to_string()),
-            }
-        }
-    }
-    impl ProducerRoot {
-        pub fn meta<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<super::Meta>,
-            T::Error: std::fmt::Display,
-        {
-            self.meta = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for meta: {}", e));
-            self
-        }
-        pub fn producer<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<super::AboutProducer>,
-            T::Error: std::fmt::Display,
-        {
-            self.producer = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for producer: {}", e));
-            self
-        }
-        pub fn producers<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<serde_json::Value>,
-            T::Error: std::fmt::Display,
-        {
-            self.producers = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for producers: {}", e));
-            self
-        }
-        pub fn products<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<Vec<super::ProducerProduct>>,
-            T::Error: std::fmt::Display,
-        {
-            self.products = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for products: {}", e));
-            self
-        }
-        pub fn reviewers<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<Vec<super::ProducerReviewer>>,
-            T::Error: std::fmt::Display,
-        {
-            self.reviewers = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for reviewers: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<ProducerRoot> for super::ProducerRoot {
-        type Error = super::error::ConversionError;
-        fn try_from(value: ProducerRoot) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                meta: value.meta?,
-                producer: value.producer?,
-                producers: value.producers?,
-                products: value.products?,
-                reviewers: value.reviewers?,
-            })
-        }
-    }
-    impl From<super::ProducerRoot> for ProducerRoot {
-        fn from(value: super::ProducerRoot) -> Self {
-            Self {
-                meta: Ok(value.meta),
-                producer: Ok(value.producer),
-                producers: Ok(value.producers),
-                products: Ok(value.products),
-                reviewers: Ok(value.reviewers),
             }
         }
     }
@@ -4162,33 +4016,21 @@ pub mod builder {
         }
     }
     #[derive(Clone, Debug)]
-    pub struct ReviewerRoot {
-        meta: Result<super::Meta, String>,
+    pub struct ReviewerData {
         producers: Result<Vec<super::ReviewProducer>, String>,
         products: Result<Vec<super::ReviewProduct>, String>,
         reviewer: Result<super::AboutReviewer, String>,
     }
-    impl Default for ReviewerRoot {
+    impl Default for ReviewerData {
         fn default() -> Self {
             Self {
-                meta: Err("no value supplied for meta".to_string()),
                 producers: Err("no value supplied for producers".to_string()),
                 products: Err("no value supplied for products".to_string()),
                 reviewer: Err("no value supplied for reviewer".to_string()),
             }
         }
     }
-    impl ReviewerRoot {
-        pub fn meta<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<super::Meta>,
-            T::Error: std::fmt::Display,
-        {
-            self.meta = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for meta: {}", e));
-            self
-        }
+    impl ReviewerData {
         pub fn producers<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<super::ReviewProducer>>,
@@ -4220,21 +4062,19 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ReviewerRoot> for super::ReviewerRoot {
+    impl std::convert::TryFrom<ReviewerData> for super::ReviewerData {
         type Error = super::error::ConversionError;
-        fn try_from(value: ReviewerRoot) -> Result<Self, super::error::ConversionError> {
+        fn try_from(value: ReviewerData) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
-                meta: value.meta?,
                 producers: value.producers?,
                 products: value.products?,
                 reviewer: value.reviewer?,
             })
         }
     }
-    impl From<super::ReviewerRoot> for ReviewerRoot {
-        fn from(value: super::ReviewerRoot) -> Self {
+    impl From<super::ReviewerData> for ReviewerData {
+        fn from(value: super::ReviewerData) -> Self {
             Self {
-                meta: Ok(value.meta),
                 producers: Ok(value.producers),
                 products: Ok(value.products),
                 reviewer: Ok(value.reviewer),

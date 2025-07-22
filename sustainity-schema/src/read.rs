@@ -1,23 +1,49 @@
 use std::io::BufRead;
 
+use serde::Deserialize;
 use snafu::prelude::*;
 
 use crate::{
     data::{CatalogEntry, ProducerEntry, ReviewEntry},
     defs, errors,
     models::{
-        AboutCataloger, AboutProducer, AboutReviewer, CatalogerRoot, Meta, ProducerRoot,
-        ProviderVariant, ReviewerRoot, Root,
+        AboutCataloger, AboutProducer, AboutReviewer, CatalogerData, Meta, ProducerData,
+        ProviderVariant, ReviewerData,
     },
 };
 
 type Lines = std::io::Lines<std::io::BufReader<std::fs::File>>;
 
-fn build_content_iter(root: Root) -> FileIterVariant {
-    match root {
-        Root::CatalogerRoot(root) => FileIterVariant::Catalog(CatalogIter::from_root(root)),
-        Root::ProducerRoot(root) => FileIterVariant::Producer(ProducerIter::from_root(root)),
-        Root::ReviewerRoot(root) => FileIterVariant::Review(ReviewIter::from_root(root)),
+fn build_yaml_content_iter(path: &std::path::Path) -> Result<FileIterVariant, errors::ReadError> {
+    let contents = std::fs::read_to_string(path).context(errors::read::IoSnafu { path })?;
+    let mut deserializer = serde_yaml::Deserializer::from_str(&contents);
+
+    let meta: Meta = if let Some(header) = deserializer.next() {
+        Meta::deserialize(header).context(errors::read::YamlSnafu { path })?
+    } else {
+        return Err(errors::SubstrateError::NoMeta).context(errors::read::SubstrateSnafu { path });
+    };
+
+    let data = if let Some(data) = deserializer.next() {
+        data
+    } else {
+        return Err(errors::SubstrateError::NoData).context(errors::read::SubstrateSnafu { path });
+    };
+
+    match meta.variant {
+        ProviderVariant::Cataloger => {
+            let data =
+                CatalogerData::deserialize(data).context(errors::read::YamlSnafu { path })?;
+            Ok(FileIterVariant::Catalog(CatalogIter::from_data(data)))
+        }
+        ProviderVariant::Producer => {
+            let data = ProducerData::deserialize(data).context(errors::read::YamlSnafu { path })?;
+            Ok(FileIterVariant::Producer(ProducerIter::from_data(data)))
+        }
+        ProviderVariant::Reviewer => {
+            let data = ReviewerData::deserialize(data).context(errors::read::YamlSnafu { path })?;
+            Ok(FileIterVariant::Review(ReviewIter::from_data(data)))
+        }
     }
 }
 
@@ -62,12 +88,12 @@ struct ContentCatalogIter {
 }
 
 impl ContentCatalogIter {
-    fn from_root(root: CatalogerRoot) -> Self {
-        let mut content = Vec::with_capacity(root.products.len() + root.producers.len());
-        for product in root.products {
+    fn from_data(data: CatalogerData) -> Self {
+        let mut content = Vec::with_capacity(data.products.len() + data.producers.len());
+        for product in data.products {
             content.push(CatalogEntry::Product(product))
         }
-        for producer in root.producers {
+        for producer in data.producers {
             content.push(CatalogEntry::Producer(producer))
         }
         Self { content, index: 0 }
@@ -123,9 +149,9 @@ pub struct CatalogIter {
 }
 
 impl CatalogIter {
-    fn from_root(root: CatalogerRoot) -> Self {
+    fn from_data(data: CatalogerData) -> Self {
         Self {
-            inner: InnerCatalogIter::Content(ContentCatalogIter::from_root(root)),
+            inner: InnerCatalogIter::Content(ContentCatalogIter::from_data(data)),
         }
     }
 
@@ -153,12 +179,12 @@ struct ContentProducerIter {
 }
 
 impl ContentProducerIter {
-    fn from_root(root: ProducerRoot) -> Self {
-        let mut content = Vec::with_capacity(root.products.len() + root.reviewers.len());
-        for product in root.products {
+    fn from_data(data: ProducerData) -> Self {
+        let mut content = Vec::with_capacity(data.products.len() + data.reviewers.len());
+        for product in data.products {
             content.push(ProducerEntry::Product(product))
         }
-        for reviewer in root.reviewers {
+        for reviewer in data.reviewers {
             content.push(ProducerEntry::Reviewer(reviewer))
         }
         Self { content, index: 0 }
@@ -214,9 +240,9 @@ pub struct ProducerIter {
 }
 
 impl ProducerIter {
-    fn from_root(root: ProducerRoot) -> Self {
+    fn from_data(data: ProducerData) -> Self {
         Self {
-            inner: InnerProducerIter::Content(ContentProducerIter::from_root(root)),
+            inner: InnerProducerIter::Content(ContentProducerIter::from_data(data)),
         }
     }
 
@@ -244,12 +270,12 @@ struct ContentReviewIter {
 }
 
 impl ContentReviewIter {
-    fn from_root(root: ReviewerRoot) -> Self {
-        let mut content = Vec::with_capacity(root.products.len() + root.producers.len());
-        for product in root.products {
+    fn from_data(data: ReviewerData) -> Self {
+        let mut content = Vec::with_capacity(data.products.len() + data.producers.len());
+        for product in data.products {
             content.push(ReviewEntry::Product(product))
         }
-        for producer in root.producers {
+        for producer in data.producers {
             content.push(ReviewEntry::Producer(producer))
         }
         Self { content, index: 0 }
@@ -305,9 +331,9 @@ pub struct ReviewIter {
 }
 
 impl ReviewIter {
-    fn from_root(root: ReviewerRoot) -> Self {
+    fn from_data(data: ReviewerData) -> Self {
         Self {
-            inner: InnerReviewIter::Content(ContentReviewIter::from_root(root)),
+            inner: InnerReviewIter::Content(ContentReviewIter::from_data(data)),
         }
     }
 
@@ -337,16 +363,7 @@ pub enum FileIterVariant {
 
 pub fn iter_file(path: &std::path::Path) -> Result<FileIterVariant, errors::ReadError> {
     match defs::get_extension(path) {
-        Some(defs::SubstrateExtension::Yaml) => {
-            let contents = std::fs::read_to_string(path).context(errors::read::IoSnafu { path })?;
-            let root = serde_yaml::from_str(&contents).context(errors::read::YamlSnafu { path })?;
-            Ok(build_content_iter(root))
-        }
-        Some(defs::SubstrateExtension::Json) => {
-            let contents = std::fs::read_to_string(path).context(errors::read::IoSnafu { path })?;
-            let root = serde_json::from_str(&contents).context(errors::read::JsonSnafu { path })?;
-            Ok(build_content_iter(root))
-        }
+        Some(defs::SubstrateExtension::Yaml) => build_yaml_content_iter(path),
         Some(defs::SubstrateExtension::JsonLines) => build_lines_iter(path),
         None => Err(errors::ReadError::Substrate {
             source: errors::SubstrateError::UnsupportedExtension,

@@ -12,6 +12,9 @@ pub enum SubstrateError {
 
     #[snafu(display("No `about` section"))]
     NoAbout,
+
+    #[snafu(display("No `data` section"))]
+    NoData,
 }
 
 #[derive(Debug, Snafu)]
