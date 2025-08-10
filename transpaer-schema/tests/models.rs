@@ -1,6 +1,6 @@
 use pretty_assertions::assert_eq;
 
-use sustainity_schema as schema;
+use transpaer_schema as schema;
 
 // TODO: Add json and jsonl parsing.
 // TODO: Add review and producer roots.
@@ -8,7 +8,7 @@ use sustainity_schema as schema;
 #[test]
 fn serde_meta() {
     let value = schema::Meta {
-        authors: vec!["Sustainity Testing Team".to_owned()],
+        authors: vec!["Transpaer Testing Team".to_owned()],
         creation_timestamp: None,
         description: None,
         title: "models fixture 1".to_owned(),
@@ -21,7 +21,7 @@ fn serde_meta() {
     let yaml_string = indoc::indoc!(
         r#"
         authors:
-        - Sustainity Testing Team
+        - Transpaer Testing Team
         title: models fixture 1
         variant: cataloger
         version: 0.0.1
