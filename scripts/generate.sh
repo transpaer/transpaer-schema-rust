@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cargo typify schema/sustainity.json -a PartialEq -a Eq -o sustainity-schema/src/models.rs
+cargo typify schema/transpaer.json -a PartialEq -a Eq -o transpaer-schema/src/models.rs
