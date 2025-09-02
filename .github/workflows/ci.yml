@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['*']
+  pull_request:
+
+jobs:
+
+  ci:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update local toolchain
+        run: |
+          rustup update
+          rustup component add clippy
+          cargo install cargo-typify
+
+      - name: Toolchain info
+        run: |
+          cargo --version --verbose
+          rustc --version
+          cargo clippy --version
+          cargo typify --version
+
+      - name: Regenerate models
+        run: ./scripts/generate.sh
+
+      - name: Check for changes
+        run: git diff --exit-code
+
+      - name: Format
+        run: cargo fmt -- --check
+
+      - name: Check
+        run: cargo check
+
+      - name: Lint
+        run: cargo clippy -- -D warnings
+
+      - name: Test
+        run: cargo test --all
+
+      - name: Build
+        run: cargo build --release
+
+  tag:
+    name: Tag
+    needs: ci
+    uses: transpaer/github-workflows/.github/workflows/tag-rust.yml@v0.1.1
+    permissions:
+      contents: write
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}

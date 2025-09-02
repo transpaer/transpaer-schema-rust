@@ -3,21 +3,19 @@
 #![allow(clippy::match_single_binding)]
 #![allow(clippy::clone_on_copy)]
 
-use serde::{Deserialize, Serialize};
-
 #[doc = r" Error types."]
 pub mod error {
-    #[doc = r" Error from a TryFrom or FromStr implementation."]
-    pub struct ConversionError(std::borrow::Cow<'static, str>);
-    impl std::error::Error for ConversionError {}
-    impl std::fmt::Display for ConversionError {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-            std::fmt::Display::fmt(&self.0, f)
+    #[doc = r" Error from a `TryFrom` or `FromStr` implementation."]
+    pub struct ConversionError(::std::borrow::Cow<'static, str>);
+    impl ::std::error::Error for ConversionError {}
+    impl ::std::fmt::Display for ConversionError {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> Result<(), ::std::fmt::Error> {
+            ::std::fmt::Display::fmt(&self.0, f)
         }
     }
-    impl std::fmt::Debug for ConversionError {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-            std::fmt::Debug::fmt(&self.0, f)
+    impl ::std::fmt::Debug for ConversionError {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> Result<(), ::std::fmt::Error> {
+            ::std::fmt::Debug::fmt(&self.0, f)
         }
     }
     impl From<&'static str> for ConversionError {
@@ -31,7 +29,7 @@ pub mod error {
         }
     }
 }
-#[doc = "AboutCataloger"]
+#[doc = "`AboutCataloger`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -64,16 +62,16 @@ pub mod error {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct AboutCataloger {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    pub id: String,
-    pub name: String,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub description: ::std::option::Option<::std::string::String>,
+    pub id: ::std::string::String,
+    pub name: ::std::string::String,
     pub variant: CatalogVariant,
-    pub website: String,
+    pub website: ::std::string::String,
 }
-impl From<&AboutCataloger> for AboutCataloger {
+impl ::std::convert::From<&AboutCataloger> for AboutCataloger {
     fn from(value: &AboutCataloger) -> Self {
         value.clone()
     }
@@ -83,7 +81,7 @@ impl AboutCataloger {
         Default::default()
     }
 }
-#[doc = "AboutCertification"]
+#[doc = "`AboutCertification`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -93,30 +91,35 @@ impl AboutCataloger {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct AboutCertification(pub serde_json::Map<String, serde_json::Value>);
-impl std::ops::Deref for AboutCertification {
-    type Target = serde_json::Map<String, serde_json::Value>;
-    fn deref(&self) -> &serde_json::Map<String, serde_json::Value> {
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
+#[serde(transparent)]
+pub struct AboutCertification(pub ::serde_json::Map<::std::string::String, ::serde_json::Value>);
+impl ::std::ops::Deref for AboutCertification {
+    type Target = ::serde_json::Map<::std::string::String, ::serde_json::Value>;
+    fn deref(&self) -> &::serde_json::Map<::std::string::String, ::serde_json::Value> {
         &self.0
     }
 }
-impl From<AboutCertification> for serde_json::Map<String, serde_json::Value> {
+impl ::std::convert::From<AboutCertification>
+    for ::serde_json::Map<::std::string::String, ::serde_json::Value>
+{
     fn from(value: AboutCertification) -> Self {
         value.0
     }
 }
-impl From<&AboutCertification> for AboutCertification {
+impl ::std::convert::From<&AboutCertification> for AboutCertification {
     fn from(value: &AboutCertification) -> Self {
         value.clone()
     }
 }
-impl From<serde_json::Map<String, serde_json::Value>> for AboutCertification {
-    fn from(value: serde_json::Map<String, serde_json::Value>) -> Self {
+impl ::std::convert::From<::serde_json::Map<::std::string::String, ::serde_json::Value>>
+    for AboutCertification
+{
+    fn from(value: ::serde_json::Map<::std::string::String, ::serde_json::Value>) -> Self {
         Self(value)
     }
 }
-#[doc = "AboutProducer"]
+#[doc = "`AboutProducer`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -161,20 +164,20 @@ impl From<serde_json::Map<String, serde_json::Value>> for AboutCertification {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct AboutProducer {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    pub id: String,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub description: ::std::option::Option<::std::string::String>,
+    pub id: ::std::string::String,
     pub ids: ProducerIds,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub images: Vec<String>,
-    pub name: String,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub origins: Option<ProducerOrigins>,
-    pub websites: Vec<String>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub images: ::std::vec::Vec<::std::string::String>,
+    pub name: ::std::string::String,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub origins: ::std::option::Option<ProducerOrigins>,
+    pub websites: ::std::vec::Vec<::std::string::String>,
 }
-impl From<&AboutProducer> for AboutProducer {
+impl ::std::convert::From<&AboutProducer> for AboutProducer {
     fn from(value: &AboutProducer) -> Self {
         value.clone()
     }
@@ -184,7 +187,7 @@ impl AboutProducer {
         Default::default()
     }
 }
-#[doc = "AboutReview"]
+#[doc = "`AboutReview`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -201,28 +204,28 @@ impl AboutProducer {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(untagged)]
 pub enum AboutReview {
     ScoreReview(AboutScoreReview),
     Certification(AboutCertification),
 }
-impl From<&AboutReview> for AboutReview {
+impl ::std::convert::From<&Self> for AboutReview {
     fn from(value: &AboutReview) -> Self {
         value.clone()
     }
 }
-impl From<AboutScoreReview> for AboutReview {
+impl ::std::convert::From<AboutScoreReview> for AboutReview {
     fn from(value: AboutScoreReview) -> Self {
         Self::ScoreReview(value)
     }
 }
-impl From<AboutCertification> for AboutReview {
+impl ::std::convert::From<AboutCertification> for AboutReview {
     fn from(value: AboutCertification) -> Self {
         Self::Certification(value)
     }
 }
-#[doc = "AboutReviewer"]
+#[doc = "`AboutReviewer`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -255,16 +258,16 @@ impl From<AboutCertification> for AboutReview {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct AboutReviewer {
-    pub description: String,
-    pub id: String,
-    pub name: String,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub reviews: Option<AboutReview>,
-    pub website: String,
+    pub description: ::std::string::String,
+    pub id: ::std::string::String,
+    pub name: ::std::string::String,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub reviews: ::std::option::Option<AboutReview>,
+    pub website: ::std::string::String,
 }
-impl From<&AboutReviewer> for AboutReviewer {
+impl ::std::convert::From<&AboutReviewer> for AboutReviewer {
     fn from(value: &AboutReviewer) -> Self {
         value.clone()
     }
@@ -274,7 +277,7 @@ impl AboutReviewer {
         Default::default()
     }
 }
-#[doc = "AboutScoreReview"]
+#[doc = "`AboutScoreReview`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -300,13 +303,13 @@ impl AboutReviewer {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct AboutScoreReview {
     pub div: i64,
     pub max: i64,
     pub min: i64,
 }
-impl From<&AboutScoreReview> for AboutScoreReview {
+impl ::std::convert::From<&AboutScoreReview> for AboutScoreReview {
     fn from(value: &AboutScoreReview) -> Self {
         value.clone()
     }
@@ -316,7 +319,7 @@ impl AboutScoreReview {
         Default::default()
     }
 }
-#[doc = "CatalogProducer"]
+#[doc = "`CatalogProducer`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -363,21 +366,21 @@ impl AboutScoreReview {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct CatalogProducer {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    pub id: String,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub description: ::std::option::Option<::std::string::String>,
+    pub id: ::std::string::String,
     pub ids: ProducerIds,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub images: Vec<String>,
-    pub names: Vec<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub origins: Option<ProducerOrigins>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub websites: Vec<String>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub images: ::std::vec::Vec<::std::string::String>,
+    pub names: ::std::vec::Vec<::std::string::String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub origins: ::std::option::Option<ProducerOrigins>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub websites: ::std::vec::Vec<::std::string::String>,
 }
-impl From<&CatalogProducer> for CatalogProducer {
+impl ::std::convert::From<&CatalogProducer> for CatalogProducer {
     fn from(value: &CatalogProducer) -> Self {
         value.clone()
     }
@@ -387,7 +390,7 @@ impl CatalogProducer {
         Default::default()
     }
 }
-#[doc = "CatalogProduct"]
+#[doc = "`CatalogProduct`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -440,27 +443,27 @@ impl CatalogProducer {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct CatalogProduct {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub availability: Option<ProductAvailability>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub categorisation: Option<ProductCategorisation>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    pub id: String,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub availability: ::std::option::Option<ProductAvailability>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub categorisation: ::std::option::Option<ProductCategorisation>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub description: ::std::option::Option<::std::string::String>,
+    pub id: ::std::string::String,
     pub ids: ProductIds,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub images: Vec<String>,
-    pub names: Vec<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub origins: Option<ProductOrigins>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub related: Option<RelatedProducts>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub shopping: Option<Shopping>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub images: ::std::vec::Vec<::std::string::String>,
+    pub names: ::std::vec::Vec<::std::string::String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub origins: ::std::option::Option<ProductOrigins>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub related: ::std::option::Option<RelatedProducts>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub shopping: ::std::option::Option<Shopping>,
 }
-impl From<&CatalogProduct> for CatalogProduct {
+impl ::std::convert::From<&CatalogProduct> for CatalogProduct {
     fn from(value: &CatalogProduct) -> Self {
         value.clone()
     }
@@ -470,7 +473,7 @@ impl CatalogProduct {
         Default::default()
     }
 }
-#[doc = "CatalogVariant"]
+#[doc = "`CatalogVariant`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -485,7 +488,18 @@ impl CatalogProduct {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    :: serde :: Deserialize,
+    :: serde :: Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
 pub enum CatalogVariant {
     #[serde(rename = "store")]
     Store,
@@ -494,23 +508,23 @@ pub enum CatalogVariant {
     #[serde(rename = "database")]
     Database,
 }
-impl From<&CatalogVariant> for CatalogVariant {
+impl ::std::convert::From<&Self> for CatalogVariant {
     fn from(value: &CatalogVariant) -> Self {
         value.clone()
     }
 }
-impl ToString for CatalogVariant {
-    fn to_string(&self) -> String {
+impl ::std::fmt::Display for CatalogVariant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         match *self {
-            Self::Store => "store".to_string(),
-            Self::PriceComparator => "priceComparator".to_string(),
-            Self::Database => "database".to_string(),
+            Self::Store => f.write_str("store"),
+            Self::PriceComparator => f.write_str("priceComparator"),
+            Self::Database => f.write_str("database"),
         }
     }
 }
-impl std::str::FromStr for CatalogVariant {
+impl ::std::str::FromStr for CatalogVariant {
     type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "store" => Ok(Self::Store),
             "priceComparator" => Ok(Self::PriceComparator),
@@ -519,25 +533,29 @@ impl std::str::FromStr for CatalogVariant {
         }
     }
 }
-impl std::convert::TryFrom<&str> for CatalogVariant {
+impl ::std::convert::TryFrom<&str> for CatalogVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<&String> for CatalogVariant {
+impl ::std::convert::TryFrom<&::std::string::String> for CatalogVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<String> for CatalogVariant {
+impl ::std::convert::TryFrom<::std::string::String> for CatalogVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-#[doc = "CatalogerData"]
+#[doc = "`CatalogerData`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -569,13 +587,13 @@ impl std::convert::TryFrom<String> for CatalogVariant {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct CatalogerData {
     pub cataloger: AboutCataloger,
-    pub producers: Vec<CatalogProducer>,
-    pub products: Vec<CatalogProduct>,
+    pub producers: ::std::vec::Vec<CatalogProducer>,
+    pub products: ::std::vec::Vec<CatalogProduct>,
 }
-impl From<&CatalogerData> for CatalogerData {
+impl ::std::convert::From<&CatalogerData> for CatalogerData {
     fn from(value: &CatalogerData) -> Self {
         value.clone()
     }
@@ -585,7 +603,7 @@ impl CatalogerData {
         Default::default()
     }
 }
-#[doc = "Certification"]
+#[doc = "`Certification`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -600,14 +618,21 @@ impl CatalogerData {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct Certification {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub is_certified: Option<bool>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub is_certified: ::std::option::Option<bool>,
 }
-impl From<&Certification> for Certification {
+impl ::std::convert::From<&Certification> for Certification {
     fn from(value: &Certification) -> Self {
         value.clone()
+    }
+}
+impl ::std::default::Default for Certification {
+    fn default() -> Self {
+        Self {
+            is_certified: Default::default(),
+        }
     }
 }
 impl Certification {
@@ -615,7 +640,7 @@ impl Certification {
         Default::default()
     }
 }
-#[doc = "EntryVariant"]
+#[doc = "`EntryVariant`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -630,7 +655,18 @@ impl Certification {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    :: serde :: Deserialize,
+    :: serde :: Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
 pub enum EntryVariant {
     #[serde(rename = "about")]
     About,
@@ -639,23 +675,23 @@ pub enum EntryVariant {
     #[serde(rename = "producer")]
     Producer,
 }
-impl From<&EntryVariant> for EntryVariant {
+impl ::std::convert::From<&Self> for EntryVariant {
     fn from(value: &EntryVariant) -> Self {
         value.clone()
     }
 }
-impl ToString for EntryVariant {
-    fn to_string(&self) -> String {
+impl ::std::fmt::Display for EntryVariant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         match *self {
-            Self::About => "about".to_string(),
-            Self::Product => "product".to_string(),
-            Self::Producer => "producer".to_string(),
+            Self::About => f.write_str("about"),
+            Self::Product => f.write_str("product"),
+            Self::Producer => f.write_str("producer"),
         }
     }
 }
-impl std::str::FromStr for EntryVariant {
+impl ::std::str::FromStr for EntryVariant {
     type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "about" => Ok(Self::About),
             "product" => Ok(Self::Product),
@@ -664,25 +700,29 @@ impl std::str::FromStr for EntryVariant {
         }
     }
 }
-impl std::convert::TryFrom<&str> for EntryVariant {
+impl ::std::convert::TryFrom<&str> for EntryVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<&String> for EntryVariant {
+impl ::std::convert::TryFrom<&::std::string::String> for EntryVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<String> for EntryVariant {
+impl ::std::convert::TryFrom<::std::string::String> for EntryVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-#[doc = "Mention"]
+#[doc = "`Mention`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -704,12 +744,12 @@ impl std::convert::TryFrom<String> for EntryVariant {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct Mention {
-    pub title: String,
-    pub url: String,
+    pub title: ::std::string::String,
+    pub url: ::std::string::String,
 }
-impl From<&Mention> for Mention {
+impl ::std::convert::From<&Mention> for Mention {
     fn from(value: &Mention) -> Self {
         value.clone()
     }
@@ -719,7 +759,7 @@ impl Mention {
         Default::default()
     }
 }
-#[doc = "Meta"]
+#[doc = "`Meta`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -766,23 +806,23 @@ impl Mention {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct Meta {
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub authors: Vec<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub creation_timestamp: Option<chrono::DateTime<chrono::offset::Utc>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    pub title: String,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub valid_from: Option<chrono::DateTime<chrono::offset::Utc>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub valid_to: Option<chrono::DateTime<chrono::offset::Utc>>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub authors: ::std::vec::Vec<::std::string::String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub creation_timestamp: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub description: ::std::option::Option<::std::string::String>,
+    pub title: ::std::string::String,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub valid_from: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub valid_to: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
     pub variant: ProviderVariant,
-    pub version: String,
+    pub version: ::std::string::String,
 }
-impl From<&Meta> for Meta {
+impl ::std::convert::From<&Meta> for Meta {
     fn from(value: &Meta) -> Self {
         value.clone()
     }
@@ -792,7 +832,7 @@ impl Meta {
         Default::default()
     }
 }
-#[doc = "ProducerData"]
+#[doc = "`ProducerData`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -824,13 +864,13 @@ impl Meta {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProducerData {
     pub producer: AboutProducer,
-    pub products: Vec<ProducerProduct>,
-    pub reviewers: Vec<ProducerReviewer>,
+    pub products: ::std::vec::Vec<ProducerProduct>,
+    pub reviewers: ::std::vec::Vec<ProducerReviewer>,
 }
-impl From<&ProducerData> for ProducerData {
+impl ::std::convert::From<&ProducerData> for ProducerData {
     fn from(value: &ProducerData) -> Self {
         value.clone()
     }
@@ -840,7 +880,7 @@ impl ProducerData {
         Default::default()
     }
 }
-#[doc = "ProducerIds"]
+#[doc = "`ProducerIds`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -873,18 +913,27 @@ impl ProducerData {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProducerIds {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub domains: Option<Vec<String>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub vat: Option<Vec<String>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub wiki: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub domains: ::std::option::Option<Vec<::std::string::String>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub vat: ::std::option::Option<Vec<::std::string::String>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub wiki: ::std::option::Option<Vec<::std::string::String>>,
 }
-impl From<&ProducerIds> for ProducerIds {
+impl ::std::convert::From<&ProducerIds> for ProducerIds {
     fn from(value: &ProducerIds) -> Self {
         value.clone()
+    }
+}
+impl ::std::default::Default for ProducerIds {
+    fn default() -> Self {
+        Self {
+            domains: Default::default(),
+            vat: Default::default(),
+            wiki: Default::default(),
+        }
     }
 }
 impl ProducerIds {
@@ -892,7 +941,7 @@ impl ProducerIds {
         Default::default()
     }
 }
-#[doc = "ProducerOrigins"]
+#[doc = "`ProducerOrigins`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -907,14 +956,21 @@ impl ProducerIds {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProducerOrigins {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub regions: Option<RegionList>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub regions: ::std::option::Option<RegionList>,
 }
-impl From<&ProducerOrigins> for ProducerOrigins {
+impl ::std::convert::From<&ProducerOrigins> for ProducerOrigins {
     fn from(value: &ProducerOrigins) -> Self {
         value.clone()
+    }
+}
+impl ::std::default::Default for ProducerOrigins {
+    fn default() -> Self {
+        Self {
+            regions: Default::default(),
+        }
     }
 }
 impl ProducerOrigins {
@@ -922,7 +978,7 @@ impl ProducerOrigins {
         Default::default()
     }
 }
-#[doc = "ProducerProduct"]
+#[doc = "`ProducerProduct`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -977,25 +1033,25 @@ impl ProducerOrigins {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProducerProduct {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub availability: Option<ProductAvailability>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub availability: ::std::option::Option<ProductAvailability>,
     pub categorisation: ProductCategorisation,
-    pub description: String,
-    pub id: String,
+    pub description: ::std::string::String,
+    pub id: ::std::string::String,
     pub ids: ProductIds,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub images: Vec<String>,
-    pub names: Vec<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub origins: Option<ProductOrigins>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub related: Option<RelatedProducts>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub shopping: Option<Shopping>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub images: ::std::vec::Vec<::std::string::String>,
+    pub names: ::std::vec::Vec<::std::string::String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub origins: ::std::option::Option<ProductOrigins>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub related: ::std::option::Option<RelatedProducts>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub shopping: ::std::option::Option<Shopping>,
 }
-impl From<&ProducerProduct> for ProducerProduct {
+impl ::std::convert::From<&ProducerProduct> for ProducerProduct {
     fn from(value: &ProducerProduct) -> Self {
         value.clone()
     }
@@ -1005,7 +1061,7 @@ impl ProducerProduct {
         Default::default()
     }
 }
-#[doc = "ProducerReviewer"]
+#[doc = "`ProducerReviewer`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1033,14 +1089,14 @@ impl ProducerProduct {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProducerReviewer {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    pub id: String,
-    pub names: Vec<String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub description: ::std::option::Option<::std::string::String>,
+    pub id: ::std::string::String,
+    pub names: ::std::vec::Vec<::std::string::String>,
 }
-impl From<&ProducerReviewer> for ProducerReviewer {
+impl ::std::convert::From<&ProducerReviewer> for ProducerReviewer {
     fn from(value: &ProducerReviewer) -> Self {
         value.clone()
     }
@@ -1050,7 +1106,7 @@ impl ProducerReviewer {
         Default::default()
     }
 }
-#[doc = "ProductAvailability"]
+#[doc = "`ProductAvailability`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1068,11 +1124,11 @@ impl ProducerReviewer {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProductAvailability {
     pub regions: Regions,
 }
-impl From<&ProductAvailability> for ProductAvailability {
+impl ::std::convert::From<&ProductAvailability> for ProductAvailability {
     fn from(value: &ProductAvailability) -> Self {
         value.clone()
     }
@@ -1082,7 +1138,7 @@ impl ProductAvailability {
         Default::default()
     }
 }
-#[doc = "ProductCategorisation"]
+#[doc = "`ProductCategorisation`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1103,11 +1159,11 @@ impl ProductAvailability {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProductCategorisation {
-    pub categories: Vec<ProductCategory>,
+    pub categories: ::std::vec::Vec<ProductCategory>,
 }
-impl From<&ProductCategorisation> for ProductCategorisation {
+impl ::std::convert::From<&ProductCategorisation> for ProductCategorisation {
     fn from(value: &ProductCategorisation) -> Self {
         value.clone()
     }
@@ -1117,7 +1173,7 @@ impl ProductCategorisation {
         Default::default()
     }
 }
-#[doc = "ProductCategory"]
+#[doc = "`ProductCategory`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1127,41 +1183,52 @@ impl ProductCategorisation {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct ProductCategory(pub String);
-impl std::ops::Deref for ProductCategory {
-    type Target = String;
-    fn deref(&self) -> &String {
+#[derive(
+    :: serde :: Deserialize,
+    :: serde :: Serialize,
+    Clone,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
+#[serde(transparent)]
+pub struct ProductCategory(pub ::std::string::String);
+impl ::std::ops::Deref for ProductCategory {
+    type Target = ::std::string::String;
+    fn deref(&self) -> &::std::string::String {
         &self.0
     }
 }
-impl From<ProductCategory> for String {
+impl ::std::convert::From<ProductCategory> for ::std::string::String {
     fn from(value: ProductCategory) -> Self {
         value.0
     }
 }
-impl From<&ProductCategory> for ProductCategory {
+impl ::std::convert::From<&ProductCategory> for ProductCategory {
     fn from(value: &ProductCategory) -> Self {
         value.clone()
     }
 }
-impl From<String> for ProductCategory {
-    fn from(value: String) -> Self {
+impl ::std::convert::From<::std::string::String> for ProductCategory {
+    fn from(value: ::std::string::String) -> Self {
         Self(value)
     }
 }
-impl std::str::FromStr for ProductCategory {
-    type Err = std::convert::Infallible;
-    fn from_str(value: &str) -> Result<Self, Self::Err> {
+impl ::std::str::FromStr for ProductCategory {
+    type Err = ::std::convert::Infallible;
+    fn from_str(value: &str) -> ::std::result::Result<Self, Self::Err> {
         Ok(Self(value.to_string()))
     }
 }
-impl ToString for ProductCategory {
-    fn to_string(&self) -> String {
-        self.0.to_string()
+impl ::std::fmt::Display for ProductCategory {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        self.0.fmt(f)
     }
 }
-#[doc = "ProductIds"]
+#[doc = "`ProductIds`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1194,18 +1261,27 @@ impl ToString for ProductCategory {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProductIds {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ean: Option<Vec<String>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub gtin: Option<Vec<String>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub wiki: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub ean: ::std::option::Option<Vec<::std::string::String>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub gtin: ::std::option::Option<Vec<::std::string::String>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub wiki: ::std::option::Option<Vec<::std::string::String>>,
 }
-impl From<&ProductIds> for ProductIds {
+impl ::std::convert::From<&ProductIds> for ProductIds {
     fn from(value: &ProductIds) -> Self {
         value.clone()
+    }
+}
+impl ::std::default::Default for ProductIds {
+    fn default() -> Self {
+        Self {
+            ean: Default::default(),
+            gtin: Default::default(),
+            wiki: Default::default(),
+        }
     }
 }
 impl ProductIds {
@@ -1213,7 +1289,7 @@ impl ProductIds {
         Default::default()
     }
 }
-#[doc = "ProductOrigins"]
+#[doc = "`ProductOrigins`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1234,16 +1310,24 @@ impl ProductIds {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ProductOrigins {
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub producer_ids: Vec<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub regions: Option<RegionList>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub producer_ids: ::std::vec::Vec<::std::string::String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub regions: ::std::option::Option<RegionList>,
 }
-impl From<&ProductOrigins> for ProductOrigins {
+impl ::std::convert::From<&ProductOrigins> for ProductOrigins {
     fn from(value: &ProductOrigins) -> Self {
         value.clone()
+    }
+}
+impl ::std::default::Default for ProductOrigins {
+    fn default() -> Self {
+        Self {
+            producer_ids: Default::default(),
+            regions: Default::default(),
+        }
     }
 }
 impl ProductOrigins {
@@ -1251,7 +1335,7 @@ impl ProductOrigins {
         Default::default()
     }
 }
-#[doc = "ProviderVariant"]
+#[doc = "`ProviderVariant`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1266,7 +1350,18 @@ impl ProductOrigins {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    :: serde :: Deserialize,
+    :: serde :: Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
 pub enum ProviderVariant {
     #[serde(rename = "cataloger")]
     Cataloger,
@@ -1275,23 +1370,23 @@ pub enum ProviderVariant {
     #[serde(rename = "reviewer")]
     Reviewer,
 }
-impl From<&ProviderVariant> for ProviderVariant {
+impl ::std::convert::From<&Self> for ProviderVariant {
     fn from(value: &ProviderVariant) -> Self {
         value.clone()
     }
 }
-impl ToString for ProviderVariant {
-    fn to_string(&self) -> String {
+impl ::std::fmt::Display for ProviderVariant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         match *self {
-            Self::Cataloger => "cataloger".to_string(),
-            Self::Producer => "producer".to_string(),
-            Self::Reviewer => "reviewer".to_string(),
+            Self::Cataloger => f.write_str("cataloger"),
+            Self::Producer => f.write_str("producer"),
+            Self::Reviewer => f.write_str("reviewer"),
         }
     }
 }
-impl std::str::FromStr for ProviderVariant {
+impl ::std::str::FromStr for ProviderVariant {
     type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "cataloger" => Ok(Self::Cataloger),
             "producer" => Ok(Self::Producer),
@@ -1300,25 +1395,29 @@ impl std::str::FromStr for ProviderVariant {
         }
     }
 }
-impl std::convert::TryFrom<&str> for ProviderVariant {
+impl ::std::convert::TryFrom<&str> for ProviderVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<&String> for ProviderVariant {
+impl ::std::convert::TryFrom<&::std::string::String> for ProviderVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<String> for ProviderVariant {
+impl ::std::convert::TryFrom<::std::string::String> for ProviderVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-#[doc = "RegionList"]
+#[doc = "`RegionList`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1332,30 +1431,31 @@ impl std::convert::TryFrom<String> for ProviderVariant {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RegionList(pub Vec<String>);
-impl std::ops::Deref for RegionList {
-    type Target = Vec<String>;
-    fn deref(&self) -> &Vec<String> {
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
+#[serde(transparent)]
+pub struct RegionList(pub Vec<::std::string::String>);
+impl ::std::ops::Deref for RegionList {
+    type Target = Vec<::std::string::String>;
+    fn deref(&self) -> &Vec<::std::string::String> {
         &self.0
     }
 }
-impl From<RegionList> for Vec<String> {
+impl ::std::convert::From<RegionList> for Vec<::std::string::String> {
     fn from(value: RegionList) -> Self {
         value.0
     }
 }
-impl From<&RegionList> for RegionList {
+impl ::std::convert::From<&RegionList> for RegionList {
     fn from(value: &RegionList) -> Self {
         value.clone()
     }
 }
-impl From<Vec<String>> for RegionList {
-    fn from(value: Vec<String>) -> Self {
+impl ::std::convert::From<Vec<::std::string::String>> for RegionList {
+    fn from(value: Vec<::std::string::String>) -> Self {
         Self(value)
     }
 }
-#[doc = "RegionVariant"]
+#[doc = "`RegionVariant`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1369,29 +1469,40 @@ impl From<Vec<String>> for RegionList {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    :: serde :: Deserialize,
+    :: serde :: Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
 pub enum RegionVariant {
     #[serde(rename = "all")]
     All,
     #[serde(rename = "unknown")]
     Unknown,
 }
-impl From<&RegionVariant> for RegionVariant {
+impl ::std::convert::From<&Self> for RegionVariant {
     fn from(value: &RegionVariant) -> Self {
         value.clone()
     }
 }
-impl ToString for RegionVariant {
-    fn to_string(&self) -> String {
+impl ::std::fmt::Display for RegionVariant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         match *self {
-            Self::All => "all".to_string(),
-            Self::Unknown => "unknown".to_string(),
+            Self::All => f.write_str("all"),
+            Self::Unknown => f.write_str("unknown"),
         }
     }
 }
-impl std::str::FromStr for RegionVariant {
+impl ::std::str::FromStr for RegionVariant {
     type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "all" => Ok(Self::All),
             "unknown" => Ok(Self::Unknown),
@@ -1399,25 +1510,29 @@ impl std::str::FromStr for RegionVariant {
         }
     }
 }
-impl std::convert::TryFrom<&str> for RegionVariant {
+impl ::std::convert::TryFrom<&str> for RegionVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<&String> for RegionVariant {
+impl ::std::convert::TryFrom<&::std::string::String> for RegionVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<String> for RegionVariant {
+impl ::std::convert::TryFrom<::std::string::String> for RegionVariant {
     type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-#[doc = "Regions"]
+#[doc = "`Regions`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1434,28 +1549,28 @@ impl std::convert::TryFrom<String> for RegionVariant {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(untagged)]
 pub enum Regions {
     Variant(RegionVariant),
     List(RegionList),
 }
-impl From<&Regions> for Regions {
+impl ::std::convert::From<&Self> for Regions {
     fn from(value: &Regions) -> Self {
         value.clone()
     }
 }
-impl From<RegionVariant> for Regions {
+impl ::std::convert::From<RegionVariant> for Regions {
     fn from(value: RegionVariant) -> Self {
         Self::Variant(value)
     }
 }
-impl From<RegionList> for Regions {
+impl ::std::convert::From<RegionList> for Regions {
     fn from(value: RegionList) -> Self {
         Self::List(value)
     }
 }
-#[doc = "RelatedProducts"]
+#[doc = "`RelatedProducts`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1481,16 +1596,24 @@ impl From<RegionList> for Regions {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct RelatedProducts {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub followed_by: Option<Vec<String>>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub preceded_by: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub followed_by: ::std::option::Option<Vec<::std::string::String>>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub preceded_by: ::std::option::Option<Vec<::std::string::String>>,
 }
-impl From<&RelatedProducts> for RelatedProducts {
+impl ::std::convert::From<&RelatedProducts> for RelatedProducts {
     fn from(value: &RelatedProducts) -> Self {
         value.clone()
+    }
+}
+impl ::std::default::Default for RelatedProducts {
+    fn default() -> Self {
+        Self {
+            followed_by: Default::default(),
+            preceded_by: Default::default(),
+        }
     }
 }
 impl RelatedProducts {
@@ -1498,7 +1621,7 @@ impl RelatedProducts {
         Default::default()
     }
 }
-#[doc = "Report"]
+#[doc = "`Report`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1516,16 +1639,24 @@ impl RelatedProducts {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct Report {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub title: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub url: Option<String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub title: ::std::option::Option<::std::string::String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub url: ::std::option::Option<::std::string::String>,
 }
-impl From<&Report> for Report {
+impl ::std::convert::From<&Report> for Report {
     fn from(value: &Report) -> Self {
         value.clone()
+    }
+}
+impl ::std::default::Default for Report {
+    fn default() -> Self {
+        Self {
+            title: Default::default(),
+            url: Default::default(),
+        }
     }
 }
 impl Report {
@@ -1533,7 +1664,7 @@ impl Report {
         Default::default()
     }
 }
-#[doc = "Reports"]
+#[doc = "`Reports`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1546,30 +1677,31 @@ impl Report {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct Reports(pub Vec<Report>);
-impl std::ops::Deref for Reports {
-    type Target = Vec<Report>;
-    fn deref(&self) -> &Vec<Report> {
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
+#[serde(transparent)]
+pub struct Reports(pub ::std::vec::Vec<Report>);
+impl ::std::ops::Deref for Reports {
+    type Target = ::std::vec::Vec<Report>;
+    fn deref(&self) -> &::std::vec::Vec<Report> {
         &self.0
     }
 }
-impl From<Reports> for Vec<Report> {
+impl ::std::convert::From<Reports> for ::std::vec::Vec<Report> {
     fn from(value: Reports) -> Self {
         value.0
     }
 }
-impl From<&Reports> for Reports {
+impl ::std::convert::From<&Reports> for Reports {
     fn from(value: &Reports) -> Self {
         value.clone()
     }
 }
-impl From<Vec<Report>> for Reports {
-    fn from(value: Vec<Report>) -> Self {
+impl ::std::convert::From<::std::vec::Vec<Report>> for Reports {
+    fn from(value: ::std::vec::Vec<Report>) -> Self {
         Self(value)
     }
 }
-#[doc = "Review"]
+#[doc = "`Review`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1589,34 +1721,34 @@ impl From<Vec<Report>> for Reports {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 #[serde(untagged)]
 pub enum Review {
     ScoreReview(ScoreReview),
     Certification(Certification),
     Mention(Mention),
 }
-impl From<&Review> for Review {
+impl ::std::convert::From<&Self> for Review {
     fn from(value: &Review) -> Self {
         value.clone()
     }
 }
-impl From<ScoreReview> for Review {
+impl ::std::convert::From<ScoreReview> for Review {
     fn from(value: ScoreReview) -> Self {
         Self::ScoreReview(value)
     }
 }
-impl From<Certification> for Review {
+impl ::std::convert::From<Certification> for Review {
     fn from(value: Certification) -> Self {
         Self::Certification(value)
     }
 }
-impl From<Mention> for Review {
+impl ::std::convert::From<Mention> for Review {
     fn from(value: Mention) -> Self {
         Self::Mention(value)
     }
 }
-#[doc = "ReviewProducer"]
+#[doc = "`ReviewProducer`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1669,25 +1801,25 @@ impl From<Mention> for Review {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ReviewProducer {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    pub id: String,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub description: ::std::option::Option<::std::string::String>,
+    pub id: ::std::string::String,
     pub ids: ProducerIds,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub images: Vec<String>,
-    pub names: Vec<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub origins: Option<ProducerOrigins>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub reports: Option<Reports>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub review: Option<Review>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub websites: Vec<String>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub images: ::std::vec::Vec<::std::string::String>,
+    pub names: ::std::vec::Vec<::std::string::String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub origins: ::std::option::Option<ProducerOrigins>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub reports: ::std::option::Option<Reports>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub review: ::std::option::Option<Review>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub websites: ::std::vec::Vec<::std::string::String>,
 }
-impl From<&ReviewProducer> for ReviewProducer {
+impl ::std::convert::From<&ReviewProducer> for ReviewProducer {
     fn from(value: &ReviewProducer) -> Self {
         value.clone()
     }
@@ -1697,7 +1829,7 @@ impl ReviewProducer {
         Default::default()
     }
 }
-#[doc = "ReviewProduct"]
+#[doc = "`ReviewProduct`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1756,35 +1888,35 @@ impl ReviewProducer {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ReviewProduct {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub availability: Option<ProductAvailability>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub availability: ::std::option::Option<ProductAvailability>,
     #[serde(
         rename = "categorisation:",
         default,
-        skip_serializing_if = "Option::is_none"
+        skip_serializing_if = "::std::option::Option::is_none"
     )]
-    pub categorisation: Option<ProductCategorisation>,
-    pub id: String,
+    pub categorisation: ::std::option::Option<ProductCategorisation>,
+    pub id: ::std::string::String,
     pub ids: ProductIds,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub images: Vec<String>,
-    pub names: Vec<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub origins: Option<ProductOrigins>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub related: Option<RelatedProducts>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub reports: Option<Reports>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub review: Option<Review>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub shopping: Option<Shopping>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub summary: Option<String>,
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub images: ::std::vec::Vec<::std::string::String>,
+    pub names: ::std::vec::Vec<::std::string::String>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub origins: ::std::option::Option<ProductOrigins>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub related: ::std::option::Option<RelatedProducts>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub reports: ::std::option::Option<Reports>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub review: ::std::option::Option<Review>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub shopping: ::std::option::Option<Shopping>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub summary: ::std::option::Option<::std::string::String>,
 }
-impl From<&ReviewProduct> for ReviewProduct {
+impl ::std::convert::From<&ReviewProduct> for ReviewProduct {
     fn from(value: &ReviewProduct) -> Self {
         value.clone()
     }
@@ -1794,7 +1926,7 @@ impl ReviewProduct {
         Default::default()
     }
 }
-#[doc = "ReviewerData"]
+#[doc = "`ReviewerData`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1826,13 +1958,13 @@ impl ReviewProduct {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ReviewerData {
-    pub producers: Vec<ReviewProducer>,
-    pub products: Vec<ReviewProduct>,
+    pub producers: ::std::vec::Vec<ReviewProducer>,
+    pub products: ::std::vec::Vec<ReviewProduct>,
     pub reviewer: AboutReviewer,
 }
-impl From<&ReviewerData> for ReviewerData {
+impl ::std::convert::From<&ReviewerData> for ReviewerData {
     fn from(value: &ReviewerData) -> Self {
         value.clone()
     }
@@ -1842,7 +1974,7 @@ impl ReviewerData {
         Default::default()
     }
 }
-#[doc = "ScoreReview"]
+#[doc = "`ScoreReview`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1862,11 +1994,11 @@ impl ReviewerData {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ScoreReview {
     pub value: i64,
 }
-impl From<&ScoreReview> for ScoreReview {
+impl ::std::convert::From<&ScoreReview> for ScoreReview {
     fn from(value: &ScoreReview) -> Self {
         value.clone()
     }
@@ -1876,7 +2008,7 @@ impl ScoreReview {
         Default::default()
     }
 }
-#[doc = "Shopping"]
+#[doc = "`Shopping`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1889,30 +2021,31 @@ impl ScoreReview {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct Shopping(pub Vec<ShoppingEntry>);
-impl std::ops::Deref for Shopping {
-    type Target = Vec<ShoppingEntry>;
-    fn deref(&self) -> &Vec<ShoppingEntry> {
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
+#[serde(transparent)]
+pub struct Shopping(pub ::std::vec::Vec<ShoppingEntry>);
+impl ::std::ops::Deref for Shopping {
+    type Target = ::std::vec::Vec<ShoppingEntry>;
+    fn deref(&self) -> &::std::vec::Vec<ShoppingEntry> {
         &self.0
     }
 }
-impl From<Shopping> for Vec<ShoppingEntry> {
+impl ::std::convert::From<Shopping> for ::std::vec::Vec<ShoppingEntry> {
     fn from(value: Shopping) -> Self {
         value.0
     }
 }
-impl From<&Shopping> for Shopping {
+impl ::std::convert::From<&Shopping> for Shopping {
     fn from(value: &Shopping) -> Self {
         value.clone()
     }
 }
-impl From<Vec<ShoppingEntry>> for Shopping {
-    fn from(value: Vec<ShoppingEntry>) -> Self {
+impl ::std::convert::From<::std::vec::Vec<ShoppingEntry>> for Shopping {
+    fn from(value: ::std::vec::Vec<ShoppingEntry>) -> Self {
         Self(value)
     }
 }
-#[doc = "ShoppingEntry"]
+#[doc = "`ShoppingEntry`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1938,13 +2071,13 @@ impl From<Vec<ShoppingEntry>> for Shopping {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug, Eq, PartialEq)]
 pub struct ShoppingEntry {
-    pub description: String,
-    pub id: String,
+    pub description: ::std::string::String,
+    pub id: ::std::string::String,
     pub shop: VerifiedShop,
 }
-impl From<&ShoppingEntry> for ShoppingEntry {
+impl ::std::convert::From<&ShoppingEntry> for ShoppingEntry {
     fn from(value: &ShoppingEntry) -> Self {
         value.clone()
     }
@@ -1954,7 +2087,7 @@ impl ShoppingEntry {
         Default::default()
     }
 }
-#[doc = "VerifiedShop"]
+#[doc = "`VerifiedShop`"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
 #[doc = r""]
@@ -1968,29 +2101,40 @@ impl ShoppingEntry {
 #[doc = "}"]
 #[doc = r" ```"]
 #[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    :: serde :: Deserialize,
+    :: serde :: Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
 pub enum VerifiedShop {
     #[serde(rename = "fairphone")]
     Fairphone,
     #[serde(rename = "amazon")]
     Amazon,
 }
-impl From<&VerifiedShop> for VerifiedShop {
+impl ::std::convert::From<&Self> for VerifiedShop {
     fn from(value: &VerifiedShop) -> Self {
         value.clone()
     }
 }
-impl ToString for VerifiedShop {
-    fn to_string(&self) -> String {
+impl ::std::fmt::Display for VerifiedShop {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         match *self {
-            Self::Fairphone => "fairphone".to_string(),
-            Self::Amazon => "amazon".to_string(),
+            Self::Fairphone => f.write_str("fairphone"),
+            Self::Amazon => f.write_str("amazon"),
         }
     }
 }
-impl std::str::FromStr for VerifiedShop {
+impl ::std::str::FromStr for VerifiedShop {
     type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "fairphone" => Ok(Self::Fairphone),
             "amazon" => Ok(Self::Amazon),
@@ -1998,21 +2142,25 @@ impl std::str::FromStr for VerifiedShop {
         }
     }
 }
-impl std::convert::TryFrom<&str> for VerifiedShop {
+impl ::std::convert::TryFrom<&str> for VerifiedShop {
     type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<&String> for VerifiedShop {
+impl ::std::convert::TryFrom<&::std::string::String> for VerifiedShop {
     type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl std::convert::TryFrom<String> for VerifiedShop {
+impl ::std::convert::TryFrom<::std::string::String> for VerifiedShop {
     type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -2020,13 +2168,16 @@ impl std::convert::TryFrom<String> for VerifiedShop {
 pub mod builder {
     #[derive(Clone, Debug)]
     pub struct AboutCataloger {
-        description: Result<Option<String>, String>,
-        id: Result<String, String>,
-        name: Result<String, String>,
-        variant: Result<super::CatalogVariant, String>,
-        website: Result<String, String>,
+        description: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        name: ::std::result::Result<::std::string::String, ::std::string::String>,
+        variant: ::std::result::Result<super::CatalogVariant, ::std::string::String>,
+        website: ::std::result::Result<::std::string::String, ::std::string::String>,
     }
-    impl Default for AboutCataloger {
+    impl ::std::default::Default for AboutCataloger {
         fn default() -> Self {
             Self {
                 description: Ok(Default::default()),
@@ -2040,8 +2191,8 @@ pub mod builder {
     impl AboutCataloger {
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -2050,8 +2201,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -2060,8 +2211,8 @@ pub mod builder {
         }
         pub fn name<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.name = value
                 .try_into()
@@ -2070,8 +2221,8 @@ pub mod builder {
         }
         pub fn variant<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::CatalogVariant>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::CatalogVariant>,
+            T::Error: ::std::fmt::Display,
         {
             self.variant = value
                 .try_into()
@@ -2080,8 +2231,8 @@ pub mod builder {
         }
         pub fn website<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.website = value
                 .try_into()
@@ -2089,9 +2240,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<AboutCataloger> for super::AboutCataloger {
+    impl ::std::convert::TryFrom<AboutCataloger> for super::AboutCataloger {
         type Error = super::error::ConversionError;
-        fn try_from(value: AboutCataloger) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: AboutCataloger,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -2101,7 +2254,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::AboutCataloger> for AboutCataloger {
+    impl ::std::convert::From<super::AboutCataloger> for AboutCataloger {
         fn from(value: super::AboutCataloger) -> Self {
             Self {
                 description: Ok(value.description),
@@ -2114,15 +2267,23 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct AboutProducer {
-        description: Result<Option<String>, String>,
-        id: Result<String, String>,
-        ids: Result<super::ProducerIds, String>,
-        images: Result<Vec<String>, String>,
-        name: Result<String, String>,
-        origins: Result<Option<super::ProducerOrigins>, String>,
-        websites: Result<Vec<String>, String>,
+        description: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        ids: ::std::result::Result<super::ProducerIds, ::std::string::String>,
+        images:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        name: ::std::result::Result<::std::string::String, ::std::string::String>,
+        origins: ::std::result::Result<
+            ::std::option::Option<super::ProducerOrigins>,
+            ::std::string::String,
+        >,
+        websites:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
     }
-    impl Default for AboutProducer {
+    impl ::std::default::Default for AboutProducer {
         fn default() -> Self {
             Self {
                 description: Ok(Default::default()),
@@ -2138,8 +2299,8 @@ pub mod builder {
     impl AboutProducer {
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -2148,8 +2309,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -2158,8 +2319,8 @@ pub mod builder {
         }
         pub fn ids<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::ProducerIds>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::ProducerIds>,
+            T::Error: ::std::fmt::Display,
         {
             self.ids = value
                 .try_into()
@@ -2168,8 +2329,8 @@ pub mod builder {
         }
         pub fn images<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.images = value
                 .try_into()
@@ -2178,8 +2339,8 @@ pub mod builder {
         }
         pub fn name<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.name = value
                 .try_into()
@@ -2188,8 +2349,8 @@ pub mod builder {
         }
         pub fn origins<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProducerOrigins>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProducerOrigins>>,
+            T::Error: ::std::fmt::Display,
         {
             self.origins = value
                 .try_into()
@@ -2198,8 +2359,8 @@ pub mod builder {
         }
         pub fn websites<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.websites = value
                 .try_into()
@@ -2207,9 +2368,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<AboutProducer> for super::AboutProducer {
+    impl ::std::convert::TryFrom<AboutProducer> for super::AboutProducer {
         type Error = super::error::ConversionError;
-        fn try_from(value: AboutProducer) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: AboutProducer,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -2221,7 +2384,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::AboutProducer> for AboutProducer {
+    impl ::std::convert::From<super::AboutProducer> for AboutProducer {
         fn from(value: super::AboutProducer) -> Self {
             Self {
                 description: Ok(value.description),
@@ -2236,13 +2399,14 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct AboutReviewer {
-        description: Result<String, String>,
-        id: Result<String, String>,
-        name: Result<String, String>,
-        reviews: Result<Option<super::AboutReview>, String>,
-        website: Result<String, String>,
+        description: ::std::result::Result<::std::string::String, ::std::string::String>,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        name: ::std::result::Result<::std::string::String, ::std::string::String>,
+        reviews:
+            ::std::result::Result<::std::option::Option<super::AboutReview>, ::std::string::String>,
+        website: ::std::result::Result<::std::string::String, ::std::string::String>,
     }
-    impl Default for AboutReviewer {
+    impl ::std::default::Default for AboutReviewer {
         fn default() -> Self {
             Self {
                 description: Err("no value supplied for description".to_string()),
@@ -2256,8 +2420,8 @@ pub mod builder {
     impl AboutReviewer {
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -2266,8 +2430,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -2276,8 +2440,8 @@ pub mod builder {
         }
         pub fn name<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.name = value
                 .try_into()
@@ -2286,8 +2450,8 @@ pub mod builder {
         }
         pub fn reviews<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::AboutReview>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::AboutReview>>,
+            T::Error: ::std::fmt::Display,
         {
             self.reviews = value
                 .try_into()
@@ -2296,8 +2460,8 @@ pub mod builder {
         }
         pub fn website<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.website = value
                 .try_into()
@@ -2305,9 +2469,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<AboutReviewer> for super::AboutReviewer {
+    impl ::std::convert::TryFrom<AboutReviewer> for super::AboutReviewer {
         type Error = super::error::ConversionError;
-        fn try_from(value: AboutReviewer) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: AboutReviewer,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -2317,7 +2483,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::AboutReviewer> for AboutReviewer {
+    impl ::std::convert::From<super::AboutReviewer> for AboutReviewer {
         fn from(value: super::AboutReviewer) -> Self {
             Self {
                 description: Ok(value.description),
@@ -2330,11 +2496,11 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct AboutScoreReview {
-        div: Result<i64, String>,
-        max: Result<i64, String>,
-        min: Result<i64, String>,
+        div: ::std::result::Result<i64, ::std::string::String>,
+        max: ::std::result::Result<i64, ::std::string::String>,
+        min: ::std::result::Result<i64, ::std::string::String>,
     }
-    impl Default for AboutScoreReview {
+    impl ::std::default::Default for AboutScoreReview {
         fn default() -> Self {
             Self {
                 div: Err("no value supplied for div".to_string()),
@@ -2346,8 +2512,8 @@ pub mod builder {
     impl AboutScoreReview {
         pub fn div<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<i64>,
+            T::Error: ::std::fmt::Display,
         {
             self.div = value
                 .try_into()
@@ -2356,8 +2522,8 @@ pub mod builder {
         }
         pub fn max<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<i64>,
+            T::Error: ::std::fmt::Display,
         {
             self.max = value
                 .try_into()
@@ -2366,8 +2532,8 @@ pub mod builder {
         }
         pub fn min<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<i64>,
+            T::Error: ::std::fmt::Display,
         {
             self.min = value
                 .try_into()
@@ -2375,9 +2541,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<AboutScoreReview> for super::AboutScoreReview {
+    impl ::std::convert::TryFrom<AboutScoreReview> for super::AboutScoreReview {
         type Error = super::error::ConversionError;
-        fn try_from(value: AboutScoreReview) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: AboutScoreReview,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 div: value.div?,
                 max: value.max?,
@@ -2385,7 +2553,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::AboutScoreReview> for AboutScoreReview {
+    impl ::std::convert::From<super::AboutScoreReview> for AboutScoreReview {
         fn from(value: super::AboutScoreReview) -> Self {
             Self {
                 div: Ok(value.div),
@@ -2396,15 +2564,23 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct CatalogProducer {
-        description: Result<Option<String>, String>,
-        id: Result<String, String>,
-        ids: Result<super::ProducerIds, String>,
-        images: Result<Vec<String>, String>,
-        names: Result<Vec<String>, String>,
-        origins: Result<Option<super::ProducerOrigins>, String>,
-        websites: Result<Vec<String>, String>,
+        description: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        ids: ::std::result::Result<super::ProducerIds, ::std::string::String>,
+        images:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        names: ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        origins: ::std::result::Result<
+            ::std::option::Option<super::ProducerOrigins>,
+            ::std::string::String,
+        >,
+        websites:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
     }
-    impl Default for CatalogProducer {
+    impl ::std::default::Default for CatalogProducer {
         fn default() -> Self {
             Self {
                 description: Ok(Default::default()),
@@ -2420,8 +2596,8 @@ pub mod builder {
     impl CatalogProducer {
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -2430,8 +2606,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -2440,8 +2616,8 @@ pub mod builder {
         }
         pub fn ids<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::ProducerIds>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::ProducerIds>,
+            T::Error: ::std::fmt::Display,
         {
             self.ids = value
                 .try_into()
@@ -2450,8 +2626,8 @@ pub mod builder {
         }
         pub fn images<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.images = value
                 .try_into()
@@ -2460,8 +2636,8 @@ pub mod builder {
         }
         pub fn names<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.names = value
                 .try_into()
@@ -2470,8 +2646,8 @@ pub mod builder {
         }
         pub fn origins<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProducerOrigins>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProducerOrigins>>,
+            T::Error: ::std::fmt::Display,
         {
             self.origins = value
                 .try_into()
@@ -2480,8 +2656,8 @@ pub mod builder {
         }
         pub fn websites<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.websites = value
                 .try_into()
@@ -2489,9 +2665,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<CatalogProducer> for super::CatalogProducer {
+    impl ::std::convert::TryFrom<CatalogProducer> for super::CatalogProducer {
         type Error = super::error::ConversionError;
-        fn try_from(value: CatalogProducer) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: CatalogProducer,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -2503,7 +2681,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::CatalogProducer> for CatalogProducer {
+    impl ::std::convert::From<super::CatalogProducer> for CatalogProducer {
         fn from(value: super::CatalogProducer) -> Self {
             Self {
                 description: Ok(value.description),
@@ -2518,18 +2696,35 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct CatalogProduct {
-        availability: Result<Option<super::ProductAvailability>, String>,
-        categorisation: Result<Option<super::ProductCategorisation>, String>,
-        description: Result<Option<String>, String>,
-        id: Result<String, String>,
-        ids: Result<super::ProductIds, String>,
-        images: Result<Vec<String>, String>,
-        names: Result<Vec<String>, String>,
-        origins: Result<Option<super::ProductOrigins>, String>,
-        related: Result<Option<super::RelatedProducts>, String>,
-        shopping: Result<Option<super::Shopping>, String>,
+        availability: ::std::result::Result<
+            ::std::option::Option<super::ProductAvailability>,
+            ::std::string::String,
+        >,
+        categorisation: ::std::result::Result<
+            ::std::option::Option<super::ProductCategorisation>,
+            ::std::string::String,
+        >,
+        description: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        ids: ::std::result::Result<super::ProductIds, ::std::string::String>,
+        images:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        names: ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        origins: ::std::result::Result<
+            ::std::option::Option<super::ProductOrigins>,
+            ::std::string::String,
+        >,
+        related: ::std::result::Result<
+            ::std::option::Option<super::RelatedProducts>,
+            ::std::string::String,
+        >,
+        shopping:
+            ::std::result::Result<::std::option::Option<super::Shopping>, ::std::string::String>,
     }
-    impl Default for CatalogProduct {
+    impl ::std::default::Default for CatalogProduct {
         fn default() -> Self {
             Self {
                 availability: Ok(Default::default()),
@@ -2548,8 +2743,8 @@ pub mod builder {
     impl CatalogProduct {
         pub fn availability<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductAvailability>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProductAvailability>>,
+            T::Error: ::std::fmt::Display,
         {
             self.availability = value
                 .try_into()
@@ -2558,8 +2753,8 @@ pub mod builder {
         }
         pub fn categorisation<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductCategorisation>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProductCategorisation>>,
+            T::Error: ::std::fmt::Display,
         {
             self.categorisation = value
                 .try_into()
@@ -2568,8 +2763,8 @@ pub mod builder {
         }
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -2578,8 +2773,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -2588,8 +2783,8 @@ pub mod builder {
         }
         pub fn ids<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::ProductIds>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::ProductIds>,
+            T::Error: ::std::fmt::Display,
         {
             self.ids = value
                 .try_into()
@@ -2598,8 +2793,8 @@ pub mod builder {
         }
         pub fn images<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.images = value
                 .try_into()
@@ -2608,8 +2803,8 @@ pub mod builder {
         }
         pub fn names<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.names = value
                 .try_into()
@@ -2618,8 +2813,8 @@ pub mod builder {
         }
         pub fn origins<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductOrigins>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProductOrigins>>,
+            T::Error: ::std::fmt::Display,
         {
             self.origins = value
                 .try_into()
@@ -2628,8 +2823,8 @@ pub mod builder {
         }
         pub fn related<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::RelatedProducts>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::RelatedProducts>>,
+            T::Error: ::std::fmt::Display,
         {
             self.related = value
                 .try_into()
@@ -2638,8 +2833,8 @@ pub mod builder {
         }
         pub fn shopping<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::Shopping>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::Shopping>>,
+            T::Error: ::std::fmt::Display,
         {
             self.shopping = value
                 .try_into()
@@ -2647,9 +2842,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<CatalogProduct> for super::CatalogProduct {
+    impl ::std::convert::TryFrom<CatalogProduct> for super::CatalogProduct {
         type Error = super::error::ConversionError;
-        fn try_from(value: CatalogProduct) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: CatalogProduct,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 availability: value.availability?,
                 categorisation: value.categorisation?,
@@ -2664,7 +2861,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::CatalogProduct> for CatalogProduct {
+    impl ::std::convert::From<super::CatalogProduct> for CatalogProduct {
         fn from(value: super::CatalogProduct) -> Self {
             Self {
                 availability: Ok(value.availability),
@@ -2682,11 +2879,13 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct CatalogerData {
-        cataloger: Result<super::AboutCataloger, String>,
-        producers: Result<Vec<super::CatalogProducer>, String>,
-        products: Result<Vec<super::CatalogProduct>, String>,
+        cataloger: ::std::result::Result<super::AboutCataloger, ::std::string::String>,
+        producers:
+            ::std::result::Result<::std::vec::Vec<super::CatalogProducer>, ::std::string::String>,
+        products:
+            ::std::result::Result<::std::vec::Vec<super::CatalogProduct>, ::std::string::String>,
     }
-    impl Default for CatalogerData {
+    impl ::std::default::Default for CatalogerData {
         fn default() -> Self {
             Self {
                 cataloger: Err("no value supplied for cataloger".to_string()),
@@ -2698,8 +2897,8 @@ pub mod builder {
     impl CatalogerData {
         pub fn cataloger<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::AboutCataloger>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::AboutCataloger>,
+            T::Error: ::std::fmt::Display,
         {
             self.cataloger = value
                 .try_into()
@@ -2708,8 +2907,8 @@ pub mod builder {
         }
         pub fn producers<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<super::CatalogProducer>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<super::CatalogProducer>>,
+            T::Error: ::std::fmt::Display,
         {
             self.producers = value
                 .try_into()
@@ -2718,8 +2917,8 @@ pub mod builder {
         }
         pub fn products<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<super::CatalogProduct>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<super::CatalogProduct>>,
+            T::Error: ::std::fmt::Display,
         {
             self.products = value
                 .try_into()
@@ -2727,9 +2926,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<CatalogerData> for super::CatalogerData {
+    impl ::std::convert::TryFrom<CatalogerData> for super::CatalogerData {
         type Error = super::error::ConversionError;
-        fn try_from(value: CatalogerData) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: CatalogerData,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 cataloger: value.cataloger?,
                 producers: value.producers?,
@@ -2737,7 +2938,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::CatalogerData> for CatalogerData {
+    impl ::std::convert::From<super::CatalogerData> for CatalogerData {
         fn from(value: super::CatalogerData) -> Self {
             Self {
                 cataloger: Ok(value.cataloger),
@@ -2748,9 +2949,9 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct Certification {
-        is_certified: Result<Option<bool>, String>,
+        is_certified: ::std::result::Result<::std::option::Option<bool>, ::std::string::String>,
     }
-    impl Default for Certification {
+    impl ::std::default::Default for Certification {
         fn default() -> Self {
             Self {
                 is_certified: Ok(Default::default()),
@@ -2760,8 +2961,8 @@ pub mod builder {
     impl Certification {
         pub fn is_certified<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<bool>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<bool>>,
+            T::Error: ::std::fmt::Display,
         {
             self.is_certified = value
                 .try_into()
@@ -2769,15 +2970,17 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<Certification> for super::Certification {
+    impl ::std::convert::TryFrom<Certification> for super::Certification {
         type Error = super::error::ConversionError;
-        fn try_from(value: Certification) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: Certification,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 is_certified: value.is_certified?,
             })
         }
     }
-    impl From<super::Certification> for Certification {
+    impl ::std::convert::From<super::Certification> for Certification {
         fn from(value: super::Certification) -> Self {
             Self {
                 is_certified: Ok(value.is_certified),
@@ -2786,10 +2989,10 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct Mention {
-        title: Result<String, String>,
-        url: Result<String, String>,
+        title: ::std::result::Result<::std::string::String, ::std::string::String>,
+        url: ::std::result::Result<::std::string::String, ::std::string::String>,
     }
-    impl Default for Mention {
+    impl ::std::default::Default for Mention {
         fn default() -> Self {
             Self {
                 title: Err("no value supplied for title".to_string()),
@@ -2800,8 +3003,8 @@ pub mod builder {
     impl Mention {
         pub fn title<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.title = value
                 .try_into()
@@ -2810,8 +3013,8 @@ pub mod builder {
         }
         pub fn url<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.url = value
                 .try_into()
@@ -2819,16 +3022,16 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<Mention> for super::Mention {
+    impl ::std::convert::TryFrom<Mention> for super::Mention {
         type Error = super::error::ConversionError;
-        fn try_from(value: Mention) -> Result<Self, super::error::ConversionError> {
+        fn try_from(value: Mention) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 title: value.title?,
                 url: value.url?,
             })
         }
     }
-    impl From<super::Mention> for Mention {
+    impl ::std::convert::From<super::Mention> for Mention {
         fn from(value: super::Mention) -> Self {
             Self {
                 title: Ok(value.title),
@@ -2838,16 +3041,29 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct Meta {
-        authors: Result<Vec<String>, String>,
-        creation_timestamp: Result<Option<chrono::DateTime<chrono::offset::Utc>>, String>,
-        description: Result<Option<String>, String>,
-        title: Result<String, String>,
-        valid_from: Result<Option<chrono::DateTime<chrono::offset::Utc>>, String>,
-        valid_to: Result<Option<chrono::DateTime<chrono::offset::Utc>>, String>,
-        variant: Result<super::ProviderVariant, String>,
-        version: Result<String, String>,
+        authors:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        creation_timestamp: ::std::result::Result<
+            ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            ::std::string::String,
+        >,
+        description: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
+        title: ::std::result::Result<::std::string::String, ::std::string::String>,
+        valid_from: ::std::result::Result<
+            ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            ::std::string::String,
+        >,
+        valid_to: ::std::result::Result<
+            ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            ::std::string::String,
+        >,
+        variant: ::std::result::Result<super::ProviderVariant, ::std::string::String>,
+        version: ::std::result::Result<::std::string::String, ::std::string::String>,
     }
-    impl Default for Meta {
+    impl ::std::default::Default for Meta {
         fn default() -> Self {
             Self {
                 authors: Ok(Default::default()),
@@ -2864,8 +3080,8 @@ pub mod builder {
     impl Meta {
         pub fn authors<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.authors = value
                 .try_into()
@@ -2874,8 +3090,10 @@ pub mod builder {
         }
         pub fn creation_timestamp<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<chrono::DateTime<chrono::offset::Utc>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            >,
+            T::Error: ::std::fmt::Display,
         {
             self.creation_timestamp = value.try_into().map_err(|e| {
                 format!(
@@ -2887,8 +3105,8 @@ pub mod builder {
         }
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -2897,8 +3115,8 @@ pub mod builder {
         }
         pub fn title<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.title = value
                 .try_into()
@@ -2907,8 +3125,10 @@ pub mod builder {
         }
         pub fn valid_from<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<chrono::DateTime<chrono::offset::Utc>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            >,
+            T::Error: ::std::fmt::Display,
         {
             self.valid_from = value
                 .try_into()
@@ -2917,8 +3137,10 @@ pub mod builder {
         }
         pub fn valid_to<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<chrono::DateTime<chrono::offset::Utc>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            >,
+            T::Error: ::std::fmt::Display,
         {
             self.valid_to = value
                 .try_into()
@@ -2927,8 +3149,8 @@ pub mod builder {
         }
         pub fn variant<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::ProviderVariant>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::ProviderVariant>,
+            T::Error: ::std::fmt::Display,
         {
             self.variant = value
                 .try_into()
@@ -2937,8 +3159,8 @@ pub mod builder {
         }
         pub fn version<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.version = value
                 .try_into()
@@ -2946,9 +3168,9 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<Meta> for super::Meta {
+    impl ::std::convert::TryFrom<Meta> for super::Meta {
         type Error = super::error::ConversionError;
-        fn try_from(value: Meta) -> Result<Self, super::error::ConversionError> {
+        fn try_from(value: Meta) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 authors: value.authors?,
                 creation_timestamp: value.creation_timestamp?,
@@ -2961,7 +3183,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::Meta> for Meta {
+    impl ::std::convert::From<super::Meta> for Meta {
         fn from(value: super::Meta) -> Self {
             Self {
                 authors: Ok(value.authors),
@@ -2977,11 +3199,13 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProducerData {
-        producer: Result<super::AboutProducer, String>,
-        products: Result<Vec<super::ProducerProduct>, String>,
-        reviewers: Result<Vec<super::ProducerReviewer>, String>,
+        producer: ::std::result::Result<super::AboutProducer, ::std::string::String>,
+        products:
+            ::std::result::Result<::std::vec::Vec<super::ProducerProduct>, ::std::string::String>,
+        reviewers:
+            ::std::result::Result<::std::vec::Vec<super::ProducerReviewer>, ::std::string::String>,
     }
-    impl Default for ProducerData {
+    impl ::std::default::Default for ProducerData {
         fn default() -> Self {
             Self {
                 producer: Err("no value supplied for producer".to_string()),
@@ -2993,8 +3217,8 @@ pub mod builder {
     impl ProducerData {
         pub fn producer<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::AboutProducer>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::AboutProducer>,
+            T::Error: ::std::fmt::Display,
         {
             self.producer = value
                 .try_into()
@@ -3003,8 +3227,8 @@ pub mod builder {
         }
         pub fn products<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<super::ProducerProduct>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<super::ProducerProduct>>,
+            T::Error: ::std::fmt::Display,
         {
             self.products = value
                 .try_into()
@@ -3013,8 +3237,8 @@ pub mod builder {
         }
         pub fn reviewers<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<super::ProducerReviewer>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<super::ProducerReviewer>>,
+            T::Error: ::std::fmt::Display,
         {
             self.reviewers = value
                 .try_into()
@@ -3022,9 +3246,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProducerData> for super::ProducerData {
+    impl ::std::convert::TryFrom<ProducerData> for super::ProducerData {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProducerData) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProducerData,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 producer: value.producer?,
                 products: value.products?,
@@ -3032,7 +3258,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ProducerData> for ProducerData {
+    impl ::std::convert::From<super::ProducerData> for ProducerData {
         fn from(value: super::ProducerData) -> Self {
             Self {
                 producer: Ok(value.producer),
@@ -3043,11 +3269,20 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProducerIds {
-        domains: Result<Option<Vec<String>>, String>,
-        vat: Result<Option<Vec<String>>, String>,
-        wiki: Result<Option<Vec<String>>, String>,
+        domains: ::std::result::Result<
+            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::string::String,
+        >,
+        vat: ::std::result::Result<
+            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::string::String,
+        >,
+        wiki: ::std::result::Result<
+            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::string::String,
+        >,
     }
-    impl Default for ProducerIds {
+    impl ::std::default::Default for ProducerIds {
         fn default() -> Self {
             Self {
                 domains: Ok(Default::default()),
@@ -3059,8 +3294,8 @@ pub mod builder {
     impl ProducerIds {
         pub fn domains<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<Vec<String>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<Vec<::std::string::String>>>,
+            T::Error: ::std::fmt::Display,
         {
             self.domains = value
                 .try_into()
@@ -3069,8 +3304,8 @@ pub mod builder {
         }
         pub fn vat<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<Vec<String>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<Vec<::std::string::String>>>,
+            T::Error: ::std::fmt::Display,
         {
             self.vat = value
                 .try_into()
@@ -3079,8 +3314,8 @@ pub mod builder {
         }
         pub fn wiki<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<Vec<String>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<Vec<::std::string::String>>>,
+            T::Error: ::std::fmt::Display,
         {
             self.wiki = value
                 .try_into()
@@ -3088,9 +3323,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProducerIds> for super::ProducerIds {
+    impl ::std::convert::TryFrom<ProducerIds> for super::ProducerIds {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProducerIds) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProducerIds,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 domains: value.domains?,
                 vat: value.vat?,
@@ -3098,7 +3335,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ProducerIds> for ProducerIds {
+    impl ::std::convert::From<super::ProducerIds> for ProducerIds {
         fn from(value: super::ProducerIds) -> Self {
             Self {
                 domains: Ok(value.domains),
@@ -3109,9 +3346,10 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProducerOrigins {
-        regions: Result<Option<super::RegionList>, String>,
+        regions:
+            ::std::result::Result<::std::option::Option<super::RegionList>, ::std::string::String>,
     }
-    impl Default for ProducerOrigins {
+    impl ::std::default::Default for ProducerOrigins {
         fn default() -> Self {
             Self {
                 regions: Ok(Default::default()),
@@ -3121,8 +3359,8 @@ pub mod builder {
     impl ProducerOrigins {
         pub fn regions<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::RegionList>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::RegionList>>,
+            T::Error: ::std::fmt::Display,
         {
             self.regions = value
                 .try_into()
@@ -3130,15 +3368,17 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProducerOrigins> for super::ProducerOrigins {
+    impl ::std::convert::TryFrom<ProducerOrigins> for super::ProducerOrigins {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProducerOrigins) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProducerOrigins,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 regions: value.regions?,
             })
         }
     }
-    impl From<super::ProducerOrigins> for ProducerOrigins {
+    impl ::std::convert::From<super::ProducerOrigins> for ProducerOrigins {
         fn from(value: super::ProducerOrigins) -> Self {
             Self {
                 regions: Ok(value.regions),
@@ -3147,18 +3387,29 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProducerProduct {
-        availability: Result<Option<super::ProductAvailability>, String>,
-        categorisation: Result<super::ProductCategorisation, String>,
-        description: Result<String, String>,
-        id: Result<String, String>,
-        ids: Result<super::ProductIds, String>,
-        images: Result<Vec<String>, String>,
-        names: Result<Vec<String>, String>,
-        origins: Result<Option<super::ProductOrigins>, String>,
-        related: Result<Option<super::RelatedProducts>, String>,
-        shopping: Result<Option<super::Shopping>, String>,
+        availability: ::std::result::Result<
+            ::std::option::Option<super::ProductAvailability>,
+            ::std::string::String,
+        >,
+        categorisation: ::std::result::Result<super::ProductCategorisation, ::std::string::String>,
+        description: ::std::result::Result<::std::string::String, ::std::string::String>,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        ids: ::std::result::Result<super::ProductIds, ::std::string::String>,
+        images:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        names: ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        origins: ::std::result::Result<
+            ::std::option::Option<super::ProductOrigins>,
+            ::std::string::String,
+        >,
+        related: ::std::result::Result<
+            ::std::option::Option<super::RelatedProducts>,
+            ::std::string::String,
+        >,
+        shopping:
+            ::std::result::Result<::std::option::Option<super::Shopping>, ::std::string::String>,
     }
-    impl Default for ProducerProduct {
+    impl ::std::default::Default for ProducerProduct {
         fn default() -> Self {
             Self {
                 availability: Ok(Default::default()),
@@ -3177,8 +3428,8 @@ pub mod builder {
     impl ProducerProduct {
         pub fn availability<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductAvailability>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProductAvailability>>,
+            T::Error: ::std::fmt::Display,
         {
             self.availability = value
                 .try_into()
@@ -3187,8 +3438,8 @@ pub mod builder {
         }
         pub fn categorisation<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::ProductCategorisation>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::ProductCategorisation>,
+            T::Error: ::std::fmt::Display,
         {
             self.categorisation = value
                 .try_into()
@@ -3197,8 +3448,8 @@ pub mod builder {
         }
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -3207,8 +3458,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -3217,8 +3468,8 @@ pub mod builder {
         }
         pub fn ids<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::ProductIds>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::ProductIds>,
+            T::Error: ::std::fmt::Display,
         {
             self.ids = value
                 .try_into()
@@ -3227,8 +3478,8 @@ pub mod builder {
         }
         pub fn images<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.images = value
                 .try_into()
@@ -3237,8 +3488,8 @@ pub mod builder {
         }
         pub fn names<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.names = value
                 .try_into()
@@ -3247,8 +3498,8 @@ pub mod builder {
         }
         pub fn origins<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductOrigins>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProductOrigins>>,
+            T::Error: ::std::fmt::Display,
         {
             self.origins = value
                 .try_into()
@@ -3257,8 +3508,8 @@ pub mod builder {
         }
         pub fn related<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::RelatedProducts>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::RelatedProducts>>,
+            T::Error: ::std::fmt::Display,
         {
             self.related = value
                 .try_into()
@@ -3267,8 +3518,8 @@ pub mod builder {
         }
         pub fn shopping<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::Shopping>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::Shopping>>,
+            T::Error: ::std::fmt::Display,
         {
             self.shopping = value
                 .try_into()
@@ -3276,9 +3527,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProducerProduct> for super::ProducerProduct {
+    impl ::std::convert::TryFrom<ProducerProduct> for super::ProducerProduct {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProducerProduct) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProducerProduct,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 availability: value.availability?,
                 categorisation: value.categorisation?,
@@ -3293,7 +3546,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ProducerProduct> for ProducerProduct {
+    impl ::std::convert::From<super::ProducerProduct> for ProducerProduct {
         fn from(value: super::ProducerProduct) -> Self {
             Self {
                 availability: Ok(value.availability),
@@ -3311,11 +3564,14 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProducerReviewer {
-        description: Result<Option<String>, String>,
-        id: Result<String, String>,
-        names: Result<Vec<String>, String>,
+        description: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        names: ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
     }
-    impl Default for ProducerReviewer {
+    impl ::std::default::Default for ProducerReviewer {
         fn default() -> Self {
             Self {
                 description: Ok(Default::default()),
@@ -3327,8 +3583,8 @@ pub mod builder {
     impl ProducerReviewer {
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -3337,8 +3593,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -3347,8 +3603,8 @@ pub mod builder {
         }
         pub fn names<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.names = value
                 .try_into()
@@ -3356,9 +3612,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProducerReviewer> for super::ProducerReviewer {
+    impl ::std::convert::TryFrom<ProducerReviewer> for super::ProducerReviewer {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProducerReviewer) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProducerReviewer,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -3366,7 +3624,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ProducerReviewer> for ProducerReviewer {
+    impl ::std::convert::From<super::ProducerReviewer> for ProducerReviewer {
         fn from(value: super::ProducerReviewer) -> Self {
             Self {
                 description: Ok(value.description),
@@ -3377,9 +3635,9 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProductAvailability {
-        regions: Result<super::Regions, String>,
+        regions: ::std::result::Result<super::Regions, ::std::string::String>,
     }
-    impl Default for ProductAvailability {
+    impl ::std::default::Default for ProductAvailability {
         fn default() -> Self {
             Self {
                 regions: Err("no value supplied for regions".to_string()),
@@ -3389,8 +3647,8 @@ pub mod builder {
     impl ProductAvailability {
         pub fn regions<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::Regions>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::Regions>,
+            T::Error: ::std::fmt::Display,
         {
             self.regions = value
                 .try_into()
@@ -3398,15 +3656,17 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProductAvailability> for super::ProductAvailability {
+    impl ::std::convert::TryFrom<ProductAvailability> for super::ProductAvailability {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProductAvailability) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProductAvailability,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 regions: value.regions?,
             })
         }
     }
-    impl From<super::ProductAvailability> for ProductAvailability {
+    impl ::std::convert::From<super::ProductAvailability> for ProductAvailability {
         fn from(value: super::ProductAvailability) -> Self {
             Self {
                 regions: Ok(value.regions),
@@ -3415,9 +3675,10 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProductCategorisation {
-        categories: Result<Vec<super::ProductCategory>, String>,
+        categories:
+            ::std::result::Result<::std::vec::Vec<super::ProductCategory>, ::std::string::String>,
     }
-    impl Default for ProductCategorisation {
+    impl ::std::default::Default for ProductCategorisation {
         fn default() -> Self {
             Self {
                 categories: Err("no value supplied for categories".to_string()),
@@ -3427,8 +3688,8 @@ pub mod builder {
     impl ProductCategorisation {
         pub fn categories<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<super::ProductCategory>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<super::ProductCategory>>,
+            T::Error: ::std::fmt::Display,
         {
             self.categories = value
                 .try_into()
@@ -3436,15 +3697,17 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProductCategorisation> for super::ProductCategorisation {
+    impl ::std::convert::TryFrom<ProductCategorisation> for super::ProductCategorisation {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProductCategorisation) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProductCategorisation,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 categories: value.categories?,
             })
         }
     }
-    impl From<super::ProductCategorisation> for ProductCategorisation {
+    impl ::std::convert::From<super::ProductCategorisation> for ProductCategorisation {
         fn from(value: super::ProductCategorisation) -> Self {
             Self {
                 categories: Ok(value.categories),
@@ -3453,11 +3716,20 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProductIds {
-        ean: Result<Option<Vec<String>>, String>,
-        gtin: Result<Option<Vec<String>>, String>,
-        wiki: Result<Option<Vec<String>>, String>,
+        ean: ::std::result::Result<
+            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::string::String,
+        >,
+        gtin: ::std::result::Result<
+            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::string::String,
+        >,
+        wiki: ::std::result::Result<
+            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::string::String,
+        >,
     }
-    impl Default for ProductIds {
+    impl ::std::default::Default for ProductIds {
         fn default() -> Self {
             Self {
                 ean: Ok(Default::default()),
@@ -3469,8 +3741,8 @@ pub mod builder {
     impl ProductIds {
         pub fn ean<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<Vec<String>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<Vec<::std::string::String>>>,
+            T::Error: ::std::fmt::Display,
         {
             self.ean = value
                 .try_into()
@@ -3479,8 +3751,8 @@ pub mod builder {
         }
         pub fn gtin<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<Vec<String>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<Vec<::std::string::String>>>,
+            T::Error: ::std::fmt::Display,
         {
             self.gtin = value
                 .try_into()
@@ -3489,8 +3761,8 @@ pub mod builder {
         }
         pub fn wiki<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<Vec<String>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<Vec<::std::string::String>>>,
+            T::Error: ::std::fmt::Display,
         {
             self.wiki = value
                 .try_into()
@@ -3498,9 +3770,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProductIds> for super::ProductIds {
+    impl ::std::convert::TryFrom<ProductIds> for super::ProductIds {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProductIds) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProductIds,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 ean: value.ean?,
                 gtin: value.gtin?,
@@ -3508,7 +3782,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ProductIds> for ProductIds {
+    impl ::std::convert::From<super::ProductIds> for ProductIds {
         fn from(value: super::ProductIds) -> Self {
             Self {
                 ean: Ok(value.ean),
@@ -3519,10 +3793,12 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ProductOrigins {
-        producer_ids: Result<Vec<String>, String>,
-        regions: Result<Option<super::RegionList>, String>,
+        producer_ids:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        regions:
+            ::std::result::Result<::std::option::Option<super::RegionList>, ::std::string::String>,
     }
-    impl Default for ProductOrigins {
+    impl ::std::default::Default for ProductOrigins {
         fn default() -> Self {
             Self {
                 producer_ids: Ok(Default::default()),
@@ -3533,8 +3809,8 @@ pub mod builder {
     impl ProductOrigins {
         pub fn producer_ids<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.producer_ids = value
                 .try_into()
@@ -3543,8 +3819,8 @@ pub mod builder {
         }
         pub fn regions<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::RegionList>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::RegionList>>,
+            T::Error: ::std::fmt::Display,
         {
             self.regions = value
                 .try_into()
@@ -3552,16 +3828,18 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ProductOrigins> for super::ProductOrigins {
+    impl ::std::convert::TryFrom<ProductOrigins> for super::ProductOrigins {
         type Error = super::error::ConversionError;
-        fn try_from(value: ProductOrigins) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ProductOrigins,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 producer_ids: value.producer_ids?,
                 regions: value.regions?,
             })
         }
     }
-    impl From<super::ProductOrigins> for ProductOrigins {
+    impl ::std::convert::From<super::ProductOrigins> for ProductOrigins {
         fn from(value: super::ProductOrigins) -> Self {
             Self {
                 producer_ids: Ok(value.producer_ids),
@@ -3571,10 +3849,16 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct RelatedProducts {
-        followed_by: Result<Option<Vec<String>>, String>,
-        preceded_by: Result<Option<Vec<String>>, String>,
+        followed_by: ::std::result::Result<
+            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::string::String,
+        >,
+        preceded_by: ::std::result::Result<
+            ::std::option::Option<Vec<::std::string::String>>,
+            ::std::string::String,
+        >,
     }
-    impl Default for RelatedProducts {
+    impl ::std::default::Default for RelatedProducts {
         fn default() -> Self {
             Self {
                 followed_by: Ok(Default::default()),
@@ -3585,8 +3869,8 @@ pub mod builder {
     impl RelatedProducts {
         pub fn followed_by<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<Vec<String>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<Vec<::std::string::String>>>,
+            T::Error: ::std::fmt::Display,
         {
             self.followed_by = value
                 .try_into()
@@ -3595,8 +3879,8 @@ pub mod builder {
         }
         pub fn preceded_by<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<Vec<String>>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<Vec<::std::string::String>>>,
+            T::Error: ::std::fmt::Display,
         {
             self.preceded_by = value
                 .try_into()
@@ -3604,16 +3888,18 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<RelatedProducts> for super::RelatedProducts {
+    impl ::std::convert::TryFrom<RelatedProducts> for super::RelatedProducts {
         type Error = super::error::ConversionError;
-        fn try_from(value: RelatedProducts) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: RelatedProducts,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 followed_by: value.followed_by?,
                 preceded_by: value.preceded_by?,
             })
         }
     }
-    impl From<super::RelatedProducts> for RelatedProducts {
+    impl ::std::convert::From<super::RelatedProducts> for RelatedProducts {
         fn from(value: super::RelatedProducts) -> Self {
             Self {
                 followed_by: Ok(value.followed_by),
@@ -3623,10 +3909,16 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct Report {
-        title: Result<Option<String>, String>,
-        url: Result<Option<String>, String>,
+        title: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
+        url: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
     }
-    impl Default for Report {
+    impl ::std::default::Default for Report {
         fn default() -> Self {
             Self {
                 title: Ok(Default::default()),
@@ -3637,8 +3929,8 @@ pub mod builder {
     impl Report {
         pub fn title<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.title = value
                 .try_into()
@@ -3647,8 +3939,8 @@ pub mod builder {
         }
         pub fn url<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.url = value
                 .try_into()
@@ -3656,16 +3948,16 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<Report> for super::Report {
+    impl ::std::convert::TryFrom<Report> for super::Report {
         type Error = super::error::ConversionError;
-        fn try_from(value: Report) -> Result<Self, super::error::ConversionError> {
+        fn try_from(value: Report) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 title: value.title?,
                 url: value.url?,
             })
         }
     }
-    impl From<super::Report> for Report {
+    impl ::std::convert::From<super::Report> for Report {
         fn from(value: super::Report) -> Self {
             Self {
                 title: Ok(value.title),
@@ -3675,17 +3967,26 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ReviewProducer {
-        description: Result<Option<String>, String>,
-        id: Result<String, String>,
-        ids: Result<super::ProducerIds, String>,
-        images: Result<Vec<String>, String>,
-        names: Result<Vec<String>, String>,
-        origins: Result<Option<super::ProducerOrigins>, String>,
-        reports: Result<Option<super::Reports>, String>,
-        review: Result<Option<super::Review>, String>,
-        websites: Result<Vec<String>, String>,
+        description: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        ids: ::std::result::Result<super::ProducerIds, ::std::string::String>,
+        images:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        names: ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        origins: ::std::result::Result<
+            ::std::option::Option<super::ProducerOrigins>,
+            ::std::string::String,
+        >,
+        reports:
+            ::std::result::Result<::std::option::Option<super::Reports>, ::std::string::String>,
+        review: ::std::result::Result<::std::option::Option<super::Review>, ::std::string::String>,
+        websites:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
     }
-    impl Default for ReviewProducer {
+    impl ::std::default::Default for ReviewProducer {
         fn default() -> Self {
             Self {
                 description: Ok(Default::default()),
@@ -3703,8 +4004,8 @@ pub mod builder {
     impl ReviewProducer {
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -3713,8 +4014,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -3723,8 +4024,8 @@ pub mod builder {
         }
         pub fn ids<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::ProducerIds>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::ProducerIds>,
+            T::Error: ::std::fmt::Display,
         {
             self.ids = value
                 .try_into()
@@ -3733,8 +4034,8 @@ pub mod builder {
         }
         pub fn images<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.images = value
                 .try_into()
@@ -3743,8 +4044,8 @@ pub mod builder {
         }
         pub fn names<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.names = value
                 .try_into()
@@ -3753,8 +4054,8 @@ pub mod builder {
         }
         pub fn origins<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProducerOrigins>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProducerOrigins>>,
+            T::Error: ::std::fmt::Display,
         {
             self.origins = value
                 .try_into()
@@ -3763,8 +4064,8 @@ pub mod builder {
         }
         pub fn reports<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::Reports>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::Reports>>,
+            T::Error: ::std::fmt::Display,
         {
             self.reports = value
                 .try_into()
@@ -3773,8 +4074,8 @@ pub mod builder {
         }
         pub fn review<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::Review>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::Review>>,
+            T::Error: ::std::fmt::Display,
         {
             self.review = value
                 .try_into()
@@ -3783,8 +4084,8 @@ pub mod builder {
         }
         pub fn websites<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.websites = value
                 .try_into()
@@ -3792,9 +4093,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ReviewProducer> for super::ReviewProducer {
+    impl ::std::convert::TryFrom<ReviewProducer> for super::ReviewProducer {
         type Error = super::error::ConversionError;
-        fn try_from(value: ReviewProducer) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ReviewProducer,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -3808,7 +4111,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ReviewProducer> for ReviewProducer {
+    impl ::std::convert::From<super::ReviewProducer> for ReviewProducer {
         fn from(value: super::ReviewProducer) -> Self {
             Self {
                 description: Ok(value.description),
@@ -3825,20 +4128,38 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ReviewProduct {
-        availability: Result<Option<super::ProductAvailability>, String>,
-        categorisation: Result<Option<super::ProductCategorisation>, String>,
-        id: Result<String, String>,
-        ids: Result<super::ProductIds, String>,
-        images: Result<Vec<String>, String>,
-        names: Result<Vec<String>, String>,
-        origins: Result<Option<super::ProductOrigins>, String>,
-        related: Result<Option<super::RelatedProducts>, String>,
-        reports: Result<Option<super::Reports>, String>,
-        review: Result<Option<super::Review>, String>,
-        shopping: Result<Option<super::Shopping>, String>,
-        summary: Result<Option<String>, String>,
+        availability: ::std::result::Result<
+            ::std::option::Option<super::ProductAvailability>,
+            ::std::string::String,
+        >,
+        categorisation: ::std::result::Result<
+            ::std::option::Option<super::ProductCategorisation>,
+            ::std::string::String,
+        >,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        ids: ::std::result::Result<super::ProductIds, ::std::string::String>,
+        images:
+            ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        names: ::std::result::Result<::std::vec::Vec<::std::string::String>, ::std::string::String>,
+        origins: ::std::result::Result<
+            ::std::option::Option<super::ProductOrigins>,
+            ::std::string::String,
+        >,
+        related: ::std::result::Result<
+            ::std::option::Option<super::RelatedProducts>,
+            ::std::string::String,
+        >,
+        reports:
+            ::std::result::Result<::std::option::Option<super::Reports>, ::std::string::String>,
+        review: ::std::result::Result<::std::option::Option<super::Review>, ::std::string::String>,
+        shopping:
+            ::std::result::Result<::std::option::Option<super::Shopping>, ::std::string::String>,
+        summary: ::std::result::Result<
+            ::std::option::Option<::std::string::String>,
+            ::std::string::String,
+        >,
     }
-    impl Default for ReviewProduct {
+    impl ::std::default::Default for ReviewProduct {
         fn default() -> Self {
             Self {
                 availability: Ok(Default::default()),
@@ -3859,8 +4180,8 @@ pub mod builder {
     impl ReviewProduct {
         pub fn availability<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductAvailability>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProductAvailability>>,
+            T::Error: ::std::fmt::Display,
         {
             self.availability = value
                 .try_into()
@@ -3869,8 +4190,8 @@ pub mod builder {
         }
         pub fn categorisation<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductCategorisation>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProductCategorisation>>,
+            T::Error: ::std::fmt::Display,
         {
             self.categorisation = value
                 .try_into()
@@ -3879,8 +4200,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -3889,8 +4210,8 @@ pub mod builder {
         }
         pub fn ids<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::ProductIds>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::ProductIds>,
+            T::Error: ::std::fmt::Display,
         {
             self.ids = value
                 .try_into()
@@ -3899,8 +4220,8 @@ pub mod builder {
         }
         pub fn images<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.images = value
                 .try_into()
@@ -3909,8 +4230,8 @@ pub mod builder {
         }
         pub fn names<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.names = value
                 .try_into()
@@ -3919,8 +4240,8 @@ pub mod builder {
         }
         pub fn origins<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::ProductOrigins>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::ProductOrigins>>,
+            T::Error: ::std::fmt::Display,
         {
             self.origins = value
                 .try_into()
@@ -3929,8 +4250,8 @@ pub mod builder {
         }
         pub fn related<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::RelatedProducts>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::RelatedProducts>>,
+            T::Error: ::std::fmt::Display,
         {
             self.related = value
                 .try_into()
@@ -3939,8 +4260,8 @@ pub mod builder {
         }
         pub fn reports<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::Reports>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::Reports>>,
+            T::Error: ::std::fmt::Display,
         {
             self.reports = value
                 .try_into()
@@ -3949,8 +4270,8 @@ pub mod builder {
         }
         pub fn review<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::Review>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::Review>>,
+            T::Error: ::std::fmt::Display,
         {
             self.review = value
                 .try_into()
@@ -3959,8 +4280,8 @@ pub mod builder {
         }
         pub fn shopping<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::Shopping>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<super::Shopping>>,
+            T::Error: ::std::fmt::Display,
         {
             self.shopping = value
                 .try_into()
@@ -3969,8 +4290,8 @@ pub mod builder {
         }
         pub fn summary<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+            T::Error: ::std::fmt::Display,
         {
             self.summary = value
                 .try_into()
@@ -3978,9 +4299,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ReviewProduct> for super::ReviewProduct {
+    impl ::std::convert::TryFrom<ReviewProduct> for super::ReviewProduct {
         type Error = super::error::ConversionError;
-        fn try_from(value: ReviewProduct) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ReviewProduct,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 availability: value.availability?,
                 categorisation: value.categorisation?,
@@ -3997,7 +4320,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ReviewProduct> for ReviewProduct {
+    impl ::std::convert::From<super::ReviewProduct> for ReviewProduct {
         fn from(value: super::ReviewProduct) -> Self {
             Self {
                 availability: Ok(value.availability),
@@ -4017,11 +4340,13 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ReviewerData {
-        producers: Result<Vec<super::ReviewProducer>, String>,
-        products: Result<Vec<super::ReviewProduct>, String>,
-        reviewer: Result<super::AboutReviewer, String>,
+        producers:
+            ::std::result::Result<::std::vec::Vec<super::ReviewProducer>, ::std::string::String>,
+        products:
+            ::std::result::Result<::std::vec::Vec<super::ReviewProduct>, ::std::string::String>,
+        reviewer: ::std::result::Result<super::AboutReviewer, ::std::string::String>,
     }
-    impl Default for ReviewerData {
+    impl ::std::default::Default for ReviewerData {
         fn default() -> Self {
             Self {
                 producers: Err("no value supplied for producers".to_string()),
@@ -4033,8 +4358,8 @@ pub mod builder {
     impl ReviewerData {
         pub fn producers<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<super::ReviewProducer>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<super::ReviewProducer>>,
+            T::Error: ::std::fmt::Display,
         {
             self.producers = value
                 .try_into()
@@ -4043,8 +4368,8 @@ pub mod builder {
         }
         pub fn products<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<super::ReviewProduct>>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::vec::Vec<super::ReviewProduct>>,
+            T::Error: ::std::fmt::Display,
         {
             self.products = value
                 .try_into()
@@ -4053,8 +4378,8 @@ pub mod builder {
         }
         pub fn reviewer<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::AboutReviewer>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::AboutReviewer>,
+            T::Error: ::std::fmt::Display,
         {
             self.reviewer = value
                 .try_into()
@@ -4062,9 +4387,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ReviewerData> for super::ReviewerData {
+    impl ::std::convert::TryFrom<ReviewerData> for super::ReviewerData {
         type Error = super::error::ConversionError;
-        fn try_from(value: ReviewerData) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ReviewerData,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 producers: value.producers?,
                 products: value.products?,
@@ -4072,7 +4399,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ReviewerData> for ReviewerData {
+    impl ::std::convert::From<super::ReviewerData> for ReviewerData {
         fn from(value: super::ReviewerData) -> Self {
             Self {
                 producers: Ok(value.producers),
@@ -4083,9 +4410,9 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ScoreReview {
-        value: Result<i64, String>,
+        value: ::std::result::Result<i64, ::std::string::String>,
     }
-    impl Default for ScoreReview {
+    impl ::std::default::Default for ScoreReview {
         fn default() -> Self {
             Self {
                 value: Err("no value supplied for value".to_string()),
@@ -4095,8 +4422,8 @@ pub mod builder {
     impl ScoreReview {
         pub fn value<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<i64>,
+            T::Error: ::std::fmt::Display,
         {
             self.value = value
                 .try_into()
@@ -4104,15 +4431,17 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ScoreReview> for super::ScoreReview {
+    impl ::std::convert::TryFrom<ScoreReview> for super::ScoreReview {
         type Error = super::error::ConversionError;
-        fn try_from(value: ScoreReview) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ScoreReview,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 value: value.value?,
             })
         }
     }
-    impl From<super::ScoreReview> for ScoreReview {
+    impl ::std::convert::From<super::ScoreReview> for ScoreReview {
         fn from(value: super::ScoreReview) -> Self {
             Self {
                 value: Ok(value.value),
@@ -4121,11 +4450,11 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct ShoppingEntry {
-        description: Result<String, String>,
-        id: Result<String, String>,
-        shop: Result<super::VerifiedShop, String>,
+        description: ::std::result::Result<::std::string::String, ::std::string::String>,
+        id: ::std::result::Result<::std::string::String, ::std::string::String>,
+        shop: ::std::result::Result<super::VerifiedShop, ::std::string::String>,
     }
-    impl Default for ShoppingEntry {
+    impl ::std::default::Default for ShoppingEntry {
         fn default() -> Self {
             Self {
                 description: Err("no value supplied for description".to_string()),
@@ -4137,8 +4466,8 @@ pub mod builder {
     impl ShoppingEntry {
         pub fn description<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.description = value
                 .try_into()
@@ -4147,8 +4476,8 @@ pub mod builder {
         }
         pub fn id<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<::std::string::String>,
+            T::Error: ::std::fmt::Display,
         {
             self.id = value
                 .try_into()
@@ -4157,8 +4486,8 @@ pub mod builder {
         }
         pub fn shop<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::VerifiedShop>,
-            T::Error: std::fmt::Display,
+            T: ::std::convert::TryInto<super::VerifiedShop>,
+            T::Error: ::std::fmt::Display,
         {
             self.shop = value
                 .try_into()
@@ -4166,9 +4495,11 @@ pub mod builder {
             self
         }
     }
-    impl std::convert::TryFrom<ShoppingEntry> for super::ShoppingEntry {
+    impl ::std::convert::TryFrom<ShoppingEntry> for super::ShoppingEntry {
         type Error = super::error::ConversionError;
-        fn try_from(value: ShoppingEntry) -> Result<Self, super::error::ConversionError> {
+        fn try_from(
+            value: ShoppingEntry,
+        ) -> ::std::result::Result<Self, super::error::ConversionError> {
             Ok(Self {
                 description: value.description?,
                 id: value.id?,
@@ -4176,7 +4507,7 @@ pub mod builder {
             })
         }
     }
-    impl From<super::ShoppingEntry> for ShoppingEntry {
+    impl ::std::convert::From<super::ShoppingEntry> for ShoppingEntry {
         fn from(value: super::ShoppingEntry) -> Self {
             Self {
                 description: Ok(value.description),
