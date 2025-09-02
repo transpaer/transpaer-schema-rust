@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #[allow(
+    clippy::derivable_impls,
     clippy::large_enum_variant,
     clippy::should_implement_trait,
     clippy::to_string_trait_impl,
